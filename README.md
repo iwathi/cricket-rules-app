@@ -4,7 +4,7 @@
 
 ## 🌐 デモ
 
-GitHub Pages: `https://<username>.github.io/cricket-rules-app/`
+GitHub Pages: https://iwathi.github.io/cricket-rules-app/
 
 ## ✨ 特徴
 

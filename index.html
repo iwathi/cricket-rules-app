@@ -112,6 +112,11 @@
           <h3 class="font-bold text-lg mb-1">大会情報</h3>
           <p class="text-sm text-slate-600 dark:text-slate-400">アジア大会2026の情報をチェック</p>
         </div>
+        <div class="bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded-xl shadow cursor-pointer border-l-4 border-emerald-400 hover:scale-105 transition" onclick="startTutorial()">
+          <div class="text-4xl mb-2">💡</div>
+          <h3 class="font-bold text-lg mb-1 text-emerald-800 dark:text-emerald-300">はじめての方へ</h3>
+          <p class="text-sm text-emerald-700 dark:text-emerald-400">このアプリの使い方（チュートリアル）を見る</p>
+        </div>
       </div>
     </section>
 
@@ -527,6 +532,38 @@
       <li class="w-1/6"><button class="nav-btn w-full py-2 flex flex-col items-center justify-center text-[10px] gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="live"><span class="text-lg">📺</span>観戦</button></li>
     </ul>
   </nav>
+
+  <!-- チュートリアルモーダル -->
+  <div id="tutorial-modal" class="hidden fixed inset-0 z-[100] bg-slate-900/80 flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden relative border border-slate-200 dark:border-slate-700 fade-in">
+      
+      <!-- プログレスバー -->
+      <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 flex">
+        <div id="tut-progress" class="bg-emerald-500 h-1.5 transition-all duration-300 w-1/4"></div>
+      </div>
+
+      <!-- スキップボタン -->
+      <button onclick="closeTutorial()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+        ✕
+      </button>
+
+      <div class="p-8 pb-6">
+        <!-- コンテンツ領域 -->
+        <div id="tut-content" class="text-center min-h-[220px] flex flex-col justify-center">
+          <!-- JSで動的に書き換える -->
+        </div>
+      </div>
+
+      <!-- ナビゲーションフッター -->
+      <div class="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
+        <button id="tut-prev" class="px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white transition" onclick="tutPrev()">← 前へ</button>
+        <div id="tut-dots" class="flex gap-1">
+          <!-- ドットナビ -->
+        </div>
+        <button id="tut-next" class="px-6 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold rounded-full shadow-md transition" onclick="tutNext()">次へ →</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     // --- データ定義 ---
@@ -1401,6 +1438,101 @@
         menBtn.className = 'flex-1 py-2 font-bold rounded-lg bg-blue-500 text-white transition';
         womenBtn.className = 'flex-1 py-2 font-bold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition';
       }
+    }
+
+    // --- チュートリアルロジック ---
+    const tutorialSteps = [
+      {
+        icon: '👋',
+        title: 'ようこそ！',
+        text: 'クリケットは世界で2番目に人気なスポーツですが、「ルールが複雑…」と思っていませんか？大丈夫、このアプリがサポートします！'
+      },
+      {
+        icon: '❓',
+        title: '迷ったら「今何が？」',
+        text: '試合中に分からないことがあれば、下の<strong class="text-primary">「今何が？」</strong>タブを開いてください。<br><br>「審判が腕を広げた」など、目の前で起きたことからルールを逆引きできます。'
+      },
+      {
+        icon: '📺',
+        title: '観戦のお供に',
+        text: '<strong class="text-red-500">「観戦」</strong>タブでは、テレビを見ながら手元のスマホでスコアを記録できます。<br><br>パワープレイやアウトの種類など、状況に応じたルール解説が自動で表示されます！'
+      },
+      {
+        icon: '🏏',
+        title: '準備完了！',
+        text: '用語集や詳細なルールブックも完備しています。<br><br>さあ、アジア大会2026のクリケット競技を思い切り楽しみましょう！'
+      }
+    ];
+
+    let currentTutStep = 0;
+    const tutModal = document.getElementById('tutorial-modal');
+    const tutContent = document.getElementById('tut-content');
+    const tutProgress = document.getElementById('tut-progress');
+    const tutPrevBtn = document.getElementById('tut-prev');
+    const tutNextBtn = document.getElementById('tut-next');
+    const tutDots = document.getElementById('tut-dots');
+
+    function renderTutorialStep() {
+      const step = tutorialSteps[currentTutStep];
+      
+      // コンテンツ更新
+      tutContent.innerHTML = `
+        <div class="text-6xl mb-6 fade-in flex-shrink-0">${step.icon}</div>
+        <h3 class="text-2xl font-bold mb-4 text-slate-800 dark:text-white">${step.title}</h3>
+        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">${step.text}</p>
+      `;
+
+      // プログレスバー
+      tutProgress.style.width = `${((currentTutStep + 1) / tutorialSteps.length) * 100}%`;
+
+      // ボタン制御
+      tutPrevBtn.style.visibility = currentTutStep === 0 ? 'hidden' : 'visible';
+      if (currentTutStep === tutorialSteps.length - 1) {
+        tutNextBtn.textContent = 'はじめる！';
+        tutNextBtn.classList.add('bg-secondary', 'hover:bg-yellow-500');
+        tutNextBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
+      } else {
+        tutNextBtn.textContent = '次へ →';
+        tutNextBtn.classList.remove('bg-secondary', 'hover:bg-yellow-500');
+        tutNextBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+      }
+
+      // ドットの生成と更新
+      tutDots.innerHTML = tutorialSteps.map((_, i) => 
+        `<div class="w-2 h-2 rounded-full transition-colors ${i === currentTutStep ? 'bg-primary' : 'bg-slate-300 dark:bg-slate-600'}"></div>`
+      ).join('');
+    }
+
+    function tutNext() {
+      if (currentTutStep < tutorialSteps.length - 1) {
+        currentTutStep++;
+        renderTutorialStep();
+      } else {
+        closeTutorial();
+      }
+    }
+
+    function tutPrev() {
+      if (currentTutStep > 0) {
+        currentTutStep--;
+        renderTutorialStep();
+      }
+    }
+
+    function startTutorial() {
+      currentTutStep = 0;
+      renderTutorialStep();
+      tutModal.classList.remove('hidden');
+    }
+
+    function closeTutorial() {
+      tutModal.classList.add('hidden');
+      localStorage.setItem('cricketAppTutorialSeen', 'true');
+    }
+
+    // 初回訪問時のみ自動表示
+    if (!localStorage.getItem('cricketAppTutorialSeen')) {
+      setTimeout(startTutorial, 500); // ロード直後だと画面がチラつくので少し遅延
     }
 
     // 初期タブ

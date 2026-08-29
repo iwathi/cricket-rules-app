@@ -85,38 +85,88 @@
     
     <!-- ホームビュー -->
     <section id="home" class="view fade-in">
-      <h2 class="text-2xl font-bold mb-6 text-primary dark:text-emerald-400">ようこそ！クリケットの世界へ</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-red-500 hover:scale-105 transition" onclick="switchTab('live')">
-          <div class="text-4xl mb-2">📺</div>
-          <h3 class="font-bold text-lg mb-1">ライブ観戦トラッカー</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-400">試合を追いながらリアルタイムでルール解説</p>
+      <!-- Attention -->
+      <div class="bg-primary text-white p-6 sm:p-8 rounded-2xl shadow-lg mb-8 text-center relative overflow-hidden">
+        <div class="relative z-10">
+          <h2 class="text-2xl sm:text-3xl font-bold mb-4">世界が熱狂するクリケットの世界へ！</h2>
+          <p class="text-sm sm:text-base opacity-90">競技人口世界第2位。アジア大会2026でメダルを狙う日本代表を応援しよう。</p>
         </div>
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-primary hover:scale-105 transition" onclick="switchTab('rules')">
-          <div class="text-4xl mb-2">📖</div>
-          <h3 class="font-bold text-lg mb-1">ルールを学ぶ</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-400">基本からT20特有のルールまで網羅</p>
+        <div class="absolute inset-0 opacity-10 text-9xl flex items-center justify-center pointer-events-none">🏏</div>
+      </div>
+
+      <!-- Interest -->
+      <div class="mb-10 max-w-2xl mx-auto text-center">
+        <h3 class="text-xl sm:text-2xl font-bold mb-6 text-slate-800 dark:text-white">「ルールが分からない…」<br><span class="text-secondary">だからこそ面白い！</span></h3>
+        <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 text-left">
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-md border-l-4 border-emerald-500">
+            <h4 class="font-bold text-lg mb-2">💥 豪快なホームラン合戦</h4>
+            <p class="text-sm text-slate-600 dark:text-slate-300">T20形式は超攻撃的。フェンス越えの「6ラン」が飛び交うエキサイティングな展開！</p>
+          </div>
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-md border-l-4 border-blue-500">
+            <h4 class="font-bold text-lg mb-2">🧠 奥深い頭脳戦</h4>
+            <p class="text-sm text-slate-600 dark:text-slate-300">ボウラー（投手）とバッター（打者）の駆け引き、独特なフィールド配置の妙。</p>
+          </div>
         </div>
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-secondary hover:scale-105 transition" onclick="switchTab('situations')">
-          <div class="text-4xl mb-2">❓</div>
-          <h3 class="font-bold text-lg mb-1">今何が起きた？</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-400">試合中のシチュエーションからルールを逆引き</p>
+      </div>
+
+      <!-- Desire -->
+      <div class="bg-slate-50 dark:bg-slate-900 p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-slate-700 mb-10 text-center">
+        <h3 class="text-xl sm:text-2xl font-bold mb-4">このアプリがあなたの「専属解説者」に</h3>
+        <p class="mb-6 text-sm sm:text-base text-slate-600 dark:text-slate-300">専門用語も、複雑なルールも覚える必要はありません。試合を見ながら気になったことをタップするだけ。</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-3">
+          <button onclick="switchTab('situations')" class="bg-white dark:bg-slate-800 px-5 py-3 rounded-lg shadow font-bold text-primary border border-slate-200 dark:border-slate-700 hover:scale-105 transition flex items-center justify-center gap-2"><span>❓</span> 審判が手を広げたら？（逆引き）</button>
+          <button onclick="switchTab('live')" class="bg-white dark:bg-slate-800 px-5 py-3 rounded-lg shadow font-bold text-red-500 border border-slate-200 dark:border-slate-700 hover:scale-105 transition flex items-center justify-center gap-2"><span>📺</span> 試合と一緒にスコアをつける</button>
         </div>
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-blue-500 hover:scale-105 transition" onclick="switchTab('glossary')">
-          <div class="text-4xl mb-2">📝</div>
-          <h3 class="font-bold text-lg mb-1">用語集</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-400">初心者向けの詳しい解説付き辞典</p>
+      </div>
+
+      <!-- Memory & Action (Mission) -->
+      <div class="bg-emerald-50 dark:bg-emerald-900/20 p-5 sm:p-8 rounded-2xl border-2 border-emerald-200 dark:border-emerald-800 mb-8 relative">
+        <div class="text-center mb-6">
+          <span class="inline-block px-3 py-1 bg-emerald-500 text-white rounded-full text-xs font-bold mb-3 tracking-wider">MISSION</span>
+          <h3 class="text-xl sm:text-2xl font-bold text-emerald-800 dark:text-emerald-300">日本代表女子の試合を観てみよう！</h3>
+          <p class="text-sm text-emerald-700 dark:text-emerald-400 mt-2">実際の試合を再生しながら、このアプリの「観戦」機能を体験してください。</p>
         </div>
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-purple-500 hover:scale-105 transition" onclick="switchTab('tournament')">
-          <div class="text-4xl mb-2">🏆</div>
-          <h3 class="font-bold text-lg mb-1">大会情報</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-400">アジア大会2026の情報をチェック</p>
+        
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row mb-6">
+          <!-- YouTubeの埋め込み (日本女子 T20 試合ハイライト等) -->
+          <div class="w-full md:w-1/2 bg-slate-200 aspect-video relative">
+            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/videoseries?list=PL46JzBv3Ym7bO3O1L1R0s_aMh_xY712nE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          <div class="w-full md:w-1/2 p-5 sm:p-6 flex flex-col justify-center">
+            <h4 class="font-bold text-lg mb-2">🔰 観戦シミュレーション</h4>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-4">数分だけでも見てみましょう。バットに当たった音、ボールが飛んでいく爽快感を体感してください。</p>
+            
+            <ol class="list-decimal list-inside text-sm font-bold text-slate-700 dark:text-slate-300 space-y-2 mb-6 ml-2">
+              <li>左の動画を再生する</li>
+              <li>下のボタンから「📺 観戦トラッカー」を起動</li>
+              <li>動画内で1球投げられるごとに、結果のボタン（0, 1, 4, 6など）を押してみる</li>
+            </ol>
+            
+            <button onclick="switchTab('live')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-lg shadow-lg transition flex items-center justify-center gap-2 animate-bounce">
+              <span class="text-xl">📺</span> 観戦トラッカーを起動して試す
+            </button>
+          </div>
         </div>
-        <div class="bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded-xl shadow cursor-pointer border-l-4 border-emerald-400 hover:scale-105 transition" onclick="startTutorial()">
-          <div class="text-4xl mb-2">💡</div>
-          <h3 class="font-bold text-lg mb-1 text-emerald-800 dark:text-emerald-300">はじめての方へ</h3>
-          <p class="text-sm text-emerald-700 dark:text-emerald-400">このアプリの使い方（チュートリアル）を見る</p>
-        </div>
+      </div>
+      
+      <!-- メニューへのリンク (補助) -->
+      <div class="grid grid-cols-4 gap-2 sm:gap-3">
+        <button class="bg-white dark:bg-slate-800 p-3 rounded-xl shadow text-center border border-slate-200 dark:border-slate-700 hover:bg-slate-50 transition flex flex-col items-center justify-center" onclick="startTutorial()">
+          <div class="text-xl mb-1">💡</div>
+          <div class="text-[10px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400">チュートリアル</div>
+        </button>
+        <button class="bg-white dark:bg-slate-800 p-3 rounded-xl shadow text-center border border-slate-200 dark:border-slate-700 hover:bg-slate-50 transition flex flex-col items-center justify-center" onclick="switchTab('rules')">
+          <div class="text-xl mb-1">📖</div>
+          <div class="text-[10px] sm:text-xs font-bold">ルール解説</div>
+        </button>
+        <button class="bg-white dark:bg-slate-800 p-3 rounded-xl shadow text-center border border-slate-200 dark:border-slate-700 hover:bg-slate-50 transition flex flex-col items-center justify-center" onclick="switchTab('glossary')">
+          <div class="text-xl mb-1">📝</div>
+          <div class="text-[10px] sm:text-xs font-bold">用語集</div>
+        </button>
+        <button class="bg-white dark:bg-slate-800 p-3 rounded-xl shadow text-center border border-slate-200 dark:border-slate-700 hover:bg-slate-50 transition flex flex-col items-center justify-center" onclick="switchTab('tournament')">
+          <div class="text-xl mb-1">🏆</div>
+          <div class="text-[10px] sm:text-xs font-bold">大会情報</div>
+        </button>
       </div>
     </section>
 

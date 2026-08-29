@@ -240,36 +240,68 @@
         </div>
 
         <!-- 状況解説エリア -->
-        <div id="live-commentary" class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl shadow border border-blue-200 dark:border-blue-800 min-h-[100px] flex items-center">
+        <div id="live-commentary" class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl shadow border border-blue-200 dark:border-blue-800 min-h-[80px] flex items-center">
           <p id="live-commentary-text" class="text-slate-800 dark:text-slate-200 fade-in w-full text-center font-bold">試合開始！</p>
         </div>
 
-        <!-- イベント入力グリッド -->
-        <div class="grid grid-cols-2 gap-3" id="live-event-buttons">
-          <button class="py-4 text-xl font-bold bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition" onclick="recordBall('0')">0 <span class="block text-xs font-normal text-slate-500">ドット</span></button>
-          <button class="py-4 text-xl font-bold bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition" onclick="recordBall('1')">1 <span class="block text-xs font-normal text-slate-500">ラン</span></button>
-          <button class="py-4 text-xl font-bold bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition" onclick="recordBall('2')">2 <span class="block text-xs font-normal text-slate-500">ラン</span></button>
-          <button class="py-4 text-xl font-bold bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition" onclick="recordBall('3')">3 <span class="block text-xs font-normal text-slate-500">ラン</span></button>
-          <button class="py-4 text-xl font-bold bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 rounded-xl shadow border border-yellow-300 dark:border-yellow-700 hover:bg-yellow-200 transition" onclick="recordBall('4')">4 <span class="block text-xs font-normal text-yellow-600 dark:text-yellow-400">バウンダリー</span></button>
-          <button class="py-4 text-xl font-bold bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 rounded-xl shadow border border-orange-300 dark:border-orange-700 hover:bg-orange-200 transition" onclick="recordBall('6')">6 <span class="block text-xs font-normal text-orange-600 dark:text-orange-400">シックス</span></button>
-          
-          <button class="py-4 text-xl font-bold bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl shadow border border-red-200 dark:border-red-800 hover:bg-red-100 transition" onclick="recordBall('Wd')">Wd <span class="block text-xs font-normal">ワイド</span></button>
-          <button class="py-4 text-xl font-bold bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl shadow border border-red-200 dark:border-red-800 hover:bg-red-100 transition" onclick="recordBall('Nb')">Nb <span class="block text-xs font-normal">ノーボール</span></button>
-          
-          <button class="py-4 text-xl font-bold bg-red-500 text-white rounded-xl shadow border border-red-600 hover:bg-red-600 transition" onclick="showWicketModal()">W <span class="block text-xs font-normal text-red-100">ウィケット</span></button>
-          <button class="py-4 text-xl font-bold bg-slate-200 dark:bg-slate-700 rounded-xl shadow border border-slate-300 dark:border-slate-600 hover:bg-slate-300 transition" onclick="toggleExtrasMenu()">... <span class="block text-xs font-normal">その他</span></button>
-        </div>
-
-        <div id="extras-menu" class="hidden grid grid-cols-2 gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
-          <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold" onclick="recordBall('B1')">バイ 1</button>
-          <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold" onclick="recordBall('B2')">バイ 2</button>
-          <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold" onclick="recordBall('LB1')">レッグバイ 1</button>
-          <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold" onclick="recordBall('LB2')">レッグバイ 2</button>
-        </div>
-
-        <div class="flex justify-between items-center mt-2">
-          <button class="text-sm font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white underline p-2" onclick="undoLastBall()">← 1球元に戻す</button>
-          <button id="btn-next-innings" class="hidden px-4 py-2 bg-primary text-white font-bold rounded-lg" onclick="startInnings2()">第2イニングスへ</button>
+        <div id="live-events-container">
+          <!-- フィールド図解付き入力UI -->
+          <div class="relative w-full max-w-sm mx-auto aspect-[4/5] bg-[#3B82F6]/10 dark:bg-[#3B82F6]/20 rounded-t-[45%] rounded-b-[45%] border-[8px] border-emerald-500 p-4 shadow-inner flex flex-col justify-between overflow-hidden mb-4">
+            <!-- フィールド背景の芝生感 (CSSグラデーション) -->
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-500/80 to-emerald-700/80 -z-10 pointer-events-none"></div>
+            
+            <!-- 30ヤードサークル (点線) -->
+            <div class="absolute inset-6 border-[3px] border-dashed border-white/40 rounded-t-[45%] rounded-b-[45%] pointer-events-none -z-0"></div>
+            
+            <!-- バウンダリー (外野) エリア -->
+            <div class="flex justify-between px-2 z-10 pt-2">
+              <button class="px-3 py-4 w-1/3 bg-orange-500/90 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg border-b-4 border-orange-700 transition" onclick="recordBall('6')">6 <span class="block text-[10px] font-normal">シックス (飛越)</span></button>
+              <button class="px-3 py-4 w-1/3 bg-yellow-500/90 hover:bg-yellow-600 text-slate-900 font-bold rounded-xl shadow-lg border-b-4 border-yellow-700 transition" onclick="recordBall('4')">4 <span class="block text-[10px] font-normal">フォー (ゴロ)</span></button>
+            </div>
+            
+            <!-- 内野走塁エリア -->
+            <div class="flex justify-between items-center z-10 mt-6 px-1">
+              <button class="w-12 h-12 bg-white/90 hover:bg-white text-slate-800 font-bold rounded-full shadow-lg border border-slate-300 transition" onclick="recordBall('3')">3</button>
+              <button class="w-14 h-14 bg-white/90 hover:bg-white text-slate-800 font-bold rounded-full shadow-lg border border-slate-300 transition text-lg" onclick="recordBall('2')">2</button>
+              <button class="w-16 h-16 bg-white/90 hover:bg-white text-slate-800 font-bold rounded-full shadow-lg border border-slate-300 transition text-xl" onclick="recordBall('1')">1</button>
+            </div>
+            
+            <!-- ピッチ (中央) -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-14 h-36 bg-[#e6d0a1] z-0 border border-[#c4a974] flex flex-col justify-between items-center py-2">
+              <div class="flex gap-0.5"><div class="w-0.5 h-3 bg-white"></div><div class="w-0.5 h-3 bg-white"></div><div class="w-0.5 h-3 bg-white"></div></div>
+              <div class="text-[10px] font-bold text-[#a07c3f] rotate-90 tracking-widest opacity-50">PITCH</div>
+              <div class="flex gap-0.5"><div class="w-0.5 h-3 bg-white"></div><div class="w-0.5 h-3 bg-white"></div><div class="w-0.5 h-3 bg-white"></div></div>
+            </div>
+            
+            <!-- ピッチアクション -->
+            <div class="flex justify-center gap-2 z-10 mt-auto pb-4 items-end">
+              <button class="w-1/3 py-3 bg-red-600/90 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg border-b-4 border-red-800 transition" onclick="showWicketModal()">W <span class="block text-[10px] font-normal text-red-200">アウト</span></button>
+              <button class="w-1/3 py-4 bg-slate-800/90 hover:bg-slate-900 text-white font-bold rounded-xl shadow-lg border-b-4 border-slate-950 transition text-xl" onclick="recordBall('0')">0 <span class="block text-[10px] font-normal text-slate-400">ドット</span></button>
+              <button class="w-1/4 py-2 bg-amber-500/90 hover:bg-amber-600 text-white font-bold rounded-xl shadow-lg border-b-4 border-amber-700 transition" onclick="toggleExtrasMenu()">🐾 <span class="block text-[10px] font-normal">反則等</span></button>
+            </div>
+          </div>
+  
+          <div id="extras-menu" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 p-3 bg-amber-50 dark:bg-amber-900/30 rounded-xl border border-amber-200 dark:border-amber-800">
+            <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold text-sm" onclick="recordBall('Wd')">ワイド (Wd)</button>
+            <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold text-sm" onclick="recordBall('Nb')">ノーボール (Nb)</button>
+            <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold text-sm" onclick="recordBall('B1')">バイ (B1)</button>
+            <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold text-sm" onclick="recordBall('LB1')">レッグバイ (LB1)</button>
+          </div>
+  
+          <!-- 履歴・ナビゲーション -->
+          <div class="flex flex-col gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl shadow border border-slate-200 dark:border-slate-700">
+            <div class="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-700">
+              <h4 class="font-bold text-sm text-slate-800 dark:text-white">イニングス履歴</h4>
+              <button class="text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white underline p-1" onclick="undoLastBall()">← 1球戻す (Undo)</button>
+            </div>
+            
+            <!-- 完了したオーバーのリストがここに入る -->
+            <div id="history-list" class="flex flex-col gap-2 max-h-48 overflow-y-auto pr-1">
+              <!-- JSで動的に追加 -->
+            </div>
+  
+            <button id="btn-next-innings" class="hidden w-full py-3 mt-2 bg-primary hover:bg-emerald-600 text-white font-bold rounded-lg shadow transition" onclick="startInnings2()">第2イニングスへ進む</button>
+          </div>
         </div>
       </div>
 
@@ -1130,6 +1162,7 @@
       balls: [0, 0],
       extras: [0, 0],
       currentOverBalls: [],
+      completedOvers: [[], []],
       isFreehit: false,
       history: [],
       phase: 'setup'
@@ -1241,6 +1274,39 @@
         co.innerHTML += `<span class="${bClass}">${text}</span>`;
       });
       
+      // 履歴一覧表示
+      const historyList = document.getElementById('history-list');
+      if (historyList) {
+        let historyHTML = '';
+        const currentInningsOvers = match.completedOvers[i];
+        
+        // 完了したオーバーを逆順で表示
+        for (let j = currentInningsOvers.length - 1; j >= 0; j--) {
+          const overNumber = j + 1;
+          const ballsHTML = currentInningsOvers[j].map(b => {
+            let color = 'text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800';
+            let text = b;
+            if (b === '0') text = '○';
+            if (b === 'W') color = 'text-red-500 bg-red-50 dark:bg-red-900/30';
+            else if (b === '4' || b === '6') color = 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30';
+            else if (b === 'Wd' || b === 'Nb') color = 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30';
+            return `<span class="inline-block px-2 py-0.5 rounded text-xs font-bold border border-slate-200 dark:border-slate-700 ${color}">${text}</span>`;
+          }).join(' ');
+          
+          historyHTML += `
+            <div class="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-sm border border-slate-100 dark:border-slate-700">
+              <span class="font-bold text-slate-400 w-12 text-center text-xs">OV ${overNumber}</span>
+              <div class="flex flex-wrap gap-1">${ballsHTML}</div>
+            </div>
+          `;
+        }
+        
+        if (historyHTML === '') {
+          historyHTML = '<p class="text-xs text-slate-400 py-2 text-center">完了したオーバーはまだありません</p>';
+        }
+        historyList.innerHTML = historyHTML;
+      }
+
       checkInningsStatus();
     }
 
@@ -1423,6 +1489,7 @@
           setTimeout(() => setCommentary("デスオーバー！残り5オーバーです。"), 2000);
         }
         
+        match.completedOvers[i].push([...match.currentOverBalls]);
         match.currentOverBalls = [];
       }
       
@@ -1444,6 +1511,7 @@
         balls: match.balls,
         extras: match.extras,
         currentOverBalls: match.currentOverBalls,
+        completedOvers: match.completedOvers,
         isFreehit: match.isFreehit
       })));
     }
@@ -1457,9 +1525,10 @@
       match.balls = prev.balls;
       match.extras = prev.extras;
       match.currentOverBalls = prev.currentOverBalls;
+      match.completedOvers = prev.completedOvers || [[], []];
       match.isFreehit = prev.isFreehit;
       
-      setCommentary("1球元に戻しました。");
+      setCommentary("1球前に戻りました。");
       updateScoreboard();
     }
 

@@ -301,51 +301,216 @@
     <!-- 大会情報ビュー -->
     <section id="tournament" class="view hidden fade-in">
       <h2 class="text-2xl font-bold mb-6 text-primary dark:text-emerald-400">🏆 アジア大会2026 クリケット情報</h2>
-      <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
-        <ul class="space-y-4">
+
+      <!-- 大会概要 -->
+      <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 mb-6">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">🏟️ 大会概要</h3>
+        <ul class="space-y-3">
           <li class="flex items-start gap-3">
-            <span class="text-2xl">🏟️</span>
-            <div><strong class="block text-lg">会場</strong>こおろぎスポーツパーク（愛知県日進市）</div>
+            <span class="text-xl">📍</span>
+            <div><strong>会場:</strong> 口論義（こうろぎ）運動公園（愛知県日進市）</div>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-2xl">🏏</span>
-            <div><strong class="block text-lg">形式</strong>T20インターナショナル</div>
+            <span class="text-xl">🏏</span>
+            <div><strong>形式:</strong> T20インターナショナル</div>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-2xl">📅</span>
-            <div>
-              <strong class="block text-lg">日程</strong>
-              <ul class="list-disc ml-5 mt-1">
-                <li>女子: 2026年9月17日〜22日</li>
-                <li>男子: 2026年9月24日〜10月3日</li>
-              </ul>
-            </div>
+            <span class="text-xl">📅</span>
+            <div><strong>期間:</strong> 女子 9/17〜22 ｜ 男子 9/24〜10/3</div>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-2xl">🌍</span>
-            <div>
-              <strong class="block text-lg">参加チーム</strong>
-              <ul class="list-disc ml-5 mt-1">
-                <li>男子: 10チーム（インド、パキスタン、バングラデシュ、スリランカ、アフガニスタン、日本 等）</li>
-                <li>女子: 8チーム</li>
-              </ul>
-            </div>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="text-2xl">⚔️</span>
-            <div>
-              <strong class="block text-lg">トーナメント形式</strong>
-              <ul class="list-disc ml-5 mt-1">
-                <li>男子: グループステージ → 準々決勝 → 準決勝 → 決勝</li>
-                <li>女子: 直接ノックアウト方式（準々決勝から開始）</li>
-              </ul>
-            </div>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="text-2xl">🏅</span>
-            <div><strong class="block text-lg">メダル</strong>金・銀・銅メダル</div>
+            <span class="text-xl">🏅</span>
+            <div><strong>メダル:</strong> 男女各 金・銀・銅</div>
           </li>
         </ul>
+      </div>
+
+      <!-- 視聴方法 -->
+      <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 mb-6">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">📺 視聴方法</h3>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <span class="text-2xl">📡</span>
+            <div>
+              <strong class="block text-blue-800 dark:text-blue-300">テレビ放送（TBS系列）</strong>
+              <p class="text-sm mt-1">TBSテレビが公式放送局。日本戦や決勝を中心に地上波放送予定。詳細な放送スケジュールは開幕直前に発表。</p>
+              <span class="inline-block mt-1 text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 rounded-full">🗣️ 日本語解説あり（予定）</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+            <span class="text-2xl">💻</span>
+            <div>
+              <strong class="block text-purple-800 dark:text-purple-300">ネット配信（TVer）</strong>
+              <p class="text-sm mt-1">TVerでのライブ配信・見逃し配信が予定。地上波で放送されない試合もカバーされる可能性あり。</p>
+              <span class="inline-block mt-1 text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 rounded-full">🗣️ 日本語解説あり（予定）</span>
+              <span class="inline-block mt-1 text-xs px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 rounded-full">📱 スマホ視聴可</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+            <span class="text-2xl">▶️</span>
+            <div>
+              <strong class="block text-red-800 dark:text-red-300">YouTube</strong>
+              <p class="text-sm mt-1">公式チャンネルでハイライト・クリップ映像を配信予定。全試合のライブ配信があるかは大会直前に発表。日本クリケット協会の独自配信の可能性も。</p>
+              <span class="inline-block mt-1 text-xs px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300 rounded-full">⚠️ 日本語解説は未定</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+            <span class="text-2xl">🎟️</span>
+            <div>
+              <strong class="block text-green-800 dark:text-green-300">現地観戦</strong>
+              <p class="text-sm mt-1">口論義運動公園（愛知県日進市）で直接観戦可能。チケット情報は大会公式サイトで。</p>
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-4">※ 放送・配信情報は変更の可能性があります。最新情報は公式サイトをご確認ください。</p>
+      </div>
+
+      <!-- グループ分け -->
+      <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 mb-6">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">🌍 出場チーム・グループ分け</h3>
+        
+        <h4 class="font-bold text-sm text-slate-500 dark:text-slate-400 mb-2">👨 男子（10チーム）</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+          <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+            <strong class="text-emerald-800 dark:text-emerald-300 text-sm">グループA</strong>
+            <p class="mt-1">🇦🇫 アフガニスタン<br>🇯🇵 <strong class="text-primary">日本</strong><br>🇳🇵 ネパール</p>
+          </div>
+          <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <strong class="text-blue-800 dark:text-blue-300 text-sm">グループB</strong>
+            <p class="mt-1">🇭🇰 ホンコン・チャイナ<br>🇲🇾 マレーシア<br>🇴🇲 オマーン</p>
+          </div>
+        </div>
+        <div class="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800 mb-4">
+          <strong class="text-amber-800 dark:text-amber-300 text-sm">🌟 シード国（準々決勝から参加）</strong>
+          <p class="mt-1">🇮🇳 インド ｜ 🇵🇰 パキスタン ｜ 🇧🇩 バングラデシュ ｜ 🇱🇰 スリランカ</p>
+        </div>
+        <p class="text-xs text-slate-500 mb-4">※ 各グループ上位2チームがシード4チームとともに準々決勝へ進出</p>
+
+        <h4 class="font-bold text-sm text-slate-500 dark:text-slate-400 mb-2">👩 女子（8チーム・直接ノックアウト方式）</h4>
+        <div class="p-3 bg-pink-50 dark:bg-pink-900/20 rounded-lg border border-pink-200 dark:border-pink-800">
+          <p>🇮🇳 インド ｜ 🇱🇰 スリランカ ｜ 🇯🇵 <strong class="text-primary">日本</strong> ｜ 🇲🇾 マレーシア<br>🇧🇩 バングラデシュ ｜ 🇵🇰 パキスタン ｜ 🇨🇳 中国 ｜ 🇹🇭 タイ</p>
+        </div>
+      </div>
+
+      <!-- 試合スケジュール -->
+      <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 mb-6">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">📅 全試合スケジュール</h3>
+        
+        <!-- 女子/男子の切り替えタブ -->
+        <div class="flex gap-2 mb-4">
+          <button id="sched-btn-women" class="flex-1 py-2 font-bold rounded-lg bg-pink-500 text-white transition" onclick="showSchedule('women')">👩 女子</button>
+          <button id="sched-btn-men" class="flex-1 py-2 font-bold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition" onclick="showSchedule('men')">👨 男子</button>
+        </div>
+
+        <!-- 女子スケジュール -->
+        <div id="schedule-women" class="space-y-4">
+          <div class="border-l-4 border-pink-400 pl-4">
+            <h4 class="font-bold text-pink-700 dark:text-pink-300">9月17日（木）— 準々決勝</h4>
+            <div class="mt-2 space-y-2">
+              <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm">
+                <span>🇧🇩 バングラデシュ vs 🇨🇳 中国</span><span class="text-xs text-slate-500 font-mono">09:00</span>
+              </div>
+              <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm">
+                <span>🇵🇰 パキスタン vs 🇹🇭 タイ</span><span class="text-xs text-slate-500 font-mono">14:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="border-l-4 border-pink-400 pl-4">
+            <h4 class="font-bold text-pink-700 dark:text-pink-300">9月18日（金）— 準々決勝</h4>
+            <div class="mt-2 space-y-2">
+              <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm">
+                <span>🇱🇰 スリランカ vs 🇲🇾 マレーシア</span><span class="text-xs text-slate-500 font-mono">09:00</span>
+              </div>
+              <div class="flex items-center justify-between p-2 bg-yellow-50 dark:bg-yellow-900/30 rounded text-sm border border-yellow-300 dark:border-yellow-700">
+                <span>🇮🇳 インド vs 🇯🇵 <strong>日本</strong> 🔥</span><span class="text-xs text-yellow-700 dark:text-yellow-300 font-mono font-bold">14:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="border-l-4 border-pink-400 pl-4">
+            <h4 class="font-bold text-pink-700 dark:text-pink-300">9月20日（日）— 準決勝</h4>
+            <div class="mt-2 p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm text-slate-500">準々決勝の勝者同士で対戦（2試合）</div>
+          </div>
+          <div class="border-l-4 border-pink-400 pl-4">
+            <h4 class="font-bold text-pink-700 dark:text-pink-300">9月22日（火・祝）— 決勝・3位決定戦</h4>
+            <div class="mt-2 space-y-2">
+              <div class="p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm text-slate-500">3位決定戦 🥉</div>
+              <div class="p-2 bg-amber-50 dark:bg-amber-900/30 rounded text-sm font-bold border border-amber-300 dark:border-amber-700">🏆 決勝 🥇🥈</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 男子スケジュール -->
+        <div id="schedule-men" class="hidden space-y-4">
+          <div class="border-l-4 border-blue-400 pl-4">
+            <h4 class="font-bold text-blue-700 dark:text-blue-300">9月24日（木）— グループステージ</h4>
+            <div class="mt-2 space-y-2">
+              <div class="flex items-center justify-between p-2 bg-yellow-50 dark:bg-yellow-900/30 rounded text-sm border border-yellow-300 dark:border-yellow-700">
+                <span>🇦🇫 アフガニスタン vs 🇯🇵 <strong>日本</strong> 🔥</span><span class="text-xs text-yellow-700 dark:text-yellow-300 font-mono font-bold">09:00</span>
+              </div>
+              <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm">
+                <span>🇭🇰 ホンコン・チャイナ vs 🇲🇾 マレーシア</span><span class="text-xs text-slate-500 font-mono">14:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="border-l-4 border-blue-400 pl-4">
+            <h4 class="font-bold text-blue-700 dark:text-blue-300">9月25日（金）— グループステージ</h4>
+            <div class="mt-2 space-y-2">
+              <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm">
+                <span>🇭🇰 ホンコン・チャイナ vs 🇴🇲 オマーン</span><span class="text-xs text-slate-500 font-mono">09:00</span>
+              </div>
+              <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm">
+                <span>🇦🇫 アフガニスタン vs 🇳🇵 ネパール</span><span class="text-xs text-slate-500 font-mono">14:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="border-l-4 border-blue-400 pl-4">
+            <h4 class="font-bold text-blue-700 dark:text-blue-300">9月26日（土）— グループステージ</h4>
+            <div class="mt-2 space-y-2">
+              <div class="flex items-center justify-between p-2 bg-yellow-50 dark:bg-yellow-900/30 rounded text-sm border border-yellow-300 dark:border-yellow-700">
+                <span>🇯🇵 <strong>日本</strong> vs 🇳🇵 ネパール 🔥</span><span class="text-xs text-yellow-700 dark:text-yellow-300 font-mono font-bold">09:00</span>
+              </div>
+              <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm">
+                <span>🇲🇾 マレーシア vs 🇴🇲 オマーン</span><span class="text-xs text-slate-500 font-mono">14:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="border-l-4 border-blue-400 pl-4">
+            <h4 class="font-bold text-blue-700 dark:text-blue-300">9月28日（月）〜29日（火）— 準々決勝</h4>
+            <div class="mt-2 p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm text-slate-500">グループ上位2チーム + シード4チームで4試合</div>
+          </div>
+          <div class="border-l-4 border-blue-400 pl-4">
+            <h4 class="font-bold text-blue-700 dark:text-blue-300">10月1日（木）— 準決勝</h4>
+            <div class="mt-2 p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm text-slate-500">準々決勝の勝者同士で対戦（2試合）</div>
+          </div>
+          <div class="border-l-4 border-blue-400 pl-4">
+            <h4 class="font-bold text-blue-700 dark:text-blue-300">10月3日（土）— 決勝・3位決定戦</h4>
+            <div class="mt-2 space-y-2">
+              <div class="p-2 bg-slate-50 dark:bg-slate-900 rounded text-sm text-slate-500">3位決定戦 🥉</div>
+              <div class="p-2 bg-amber-50 dark:bg-amber-900/30 rounded text-sm font-bold border border-amber-300 dark:border-amber-700">🏆 決勝 🥇🥈</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-4">※ 時刻は日本時間（JST）。日程・対戦カードは変更の可能性があります。</p>
+      </div>
+
+      <!-- 関連リンク -->
+      <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">🔗 関連リンク</h3>
+        <div class="space-y-3">
+          <a href="https://www.aichi-nagoya2026.org/" target="_blank" rel="noopener" class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+            <span class="text-xl">🌐</span>
+            <div><strong class="text-sm">アジア大会 愛知・名古屋2026 公式サイト</strong><p class="text-xs text-slate-500">最新の大会情報・チケット</p></div>
+          </a>
+          <a href="https://www.cricket.or.jp/" target="_blank" rel="noopener" class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+            <span class="text-xl">🏏</span>
+            <div><strong class="text-sm">日本クリケット協会 (JCA)</strong><p class="text-xs text-slate-500">日本代表情報・試合結果</p></div>
+          </a>
+          <a href="https://tver.jp/" target="_blank" rel="noopener" class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+            <span class="text-xl">📺</span>
+            <div><strong class="text-sm">TVer</strong><p class="text-xs text-slate-500">ライブ配信・見逃し配信</p></div>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -1218,6 +1383,25 @@
         searchResults.classList.add('hidden');
       }
     });
+
+    // スケジュール切り替え（女子/男子）
+    function showSchedule(type) {
+      const womenDiv = document.getElementById('schedule-women');
+      const menDiv = document.getElementById('schedule-men');
+      const womenBtn = document.getElementById('sched-btn-women');
+      const menBtn = document.getElementById('sched-btn-men');
+      if (type === 'women') {
+        womenDiv.classList.remove('hidden');
+        menDiv.classList.add('hidden');
+        womenBtn.className = 'flex-1 py-2 font-bold rounded-lg bg-pink-500 text-white transition';
+        menBtn.className = 'flex-1 py-2 font-bold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition';
+      } else {
+        womenDiv.classList.add('hidden');
+        menDiv.classList.remove('hidden');
+        menBtn.className = 'flex-1 py-2 font-bold rounded-lg bg-blue-500 text-white transition';
+        womenBtn.className = 'flex-1 py-2 font-bold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 transition';
+      }
+    }
 
     // 初期タブ
     switchTab('home');

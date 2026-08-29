@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏏 クリケットルールブック</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#059669', // emerald-600
+            secondary: '#f59e0b', // amber-500
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* ベーススタイル */
+    body { font-family: sans-serif; transition: background-color 0.3s, color 0.3s; }
+    
+    /* アニメーション */
+    .fade-in { animation: fadeIn 0.3s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* 審判シグナルアニメーション */
+    .signal-icon { font-size: 3rem; display: inline-block; margin-bottom: 0.5rem; }
+    .signal-bounce { animation: bounce 1s infinite alternate; }
+    .signal-swing { animation: swing 1s infinite alternate ease-in-out; }
+    .signal-spin { animation: spin 2s infinite linear; }
+    @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+    @keyframes swing { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* 検索ドロップダウンのスタイル */
+    #search-results {
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 50;
+      max-height: 300px; overflow-y: auto;
+    }
+    
+    /* 隠すクラス */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 flex flex-col min-h-screen">
+
+  <!-- ヘッダー -->
+  <header class="bg-primary text-white p-4 shadow-md sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex justify-between items-center w-full md:w-auto">
+        <h1 class="text-xl font-bold flex items-center gap-2">🏏 クリケットルールブック</h1>
+        <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/20 transition">🌙</button>
+      </div>
+      <div class="relative w-full md:w-64">
+        <input type="text" id="search-input" placeholder="ルール・用語を検索..." class="w-full px-4 py-2 rounded-full text-slate-800 focus:outline-none focus:ring-2 focus:ring-secondary">
+        <ul id="search-results" class="hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl mt-2 p-2"></ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- PC向けナビゲーション -->
+  <nav class="hidden md:block bg-white dark:bg-slate-800 shadow border-b border-slate-200 dark:border-slate-700 sticky top-[76px] z-20">
+    <ul class="max-w-4xl mx-auto flex justify-center space-x-2 p-2">
+      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="home">🏠 ホーム</button></li>
+      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="rules">📖 ルール</button></li>
+      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="situations">❓ 今何が？</button></li>
+      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="glossary">📝 用語集</button></li>
+      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="tournament">🏆 大会情報</button></li>
+    </ul>
+  </nav>
+
+  <!-- メインコンテンツ -->
+  <main class="flex-grow max-w-4xl mx-auto w-full p-4 pb-24 md:pb-8">
+    
+    <!-- ホームビュー -->
+    <section id="home" class="view fade-in">
+      <h2 class="text-2xl font-bold mb-6 text-primary dark:text-emerald-400">ようこそ！クリケットの世界へ</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-primary hover:scale-105 transition" onclick="switchTab('rules')">
+          <div class="text-4xl mb-2">📖</div>
+          <h3 class="font-bold text-lg mb-1">ルールを学ぶ</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">基本からT20特有のルールまで網羅</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-secondary hover:scale-105 transition" onclick="switchTab('situations')">
+          <div class="text-4xl mb-2">❓</div>
+          <h3 class="font-bold text-lg mb-1">今何が起きた？</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">試合中のシチュエーションからルールを逆引き</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-blue-500 hover:scale-105 transition" onclick="switchTab('glossary')">
+          <div class="text-4xl mb-2">📝</div>
+          <h3 class="font-bold text-lg mb-1">用語集</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">初心者向けの詳しい解説付き辞典</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-purple-500 hover:scale-105 transition" onclick="switchTab('tournament')">
+          <div class="text-4xl mb-2">🏆</div>
+          <h3 class="font-bold text-lg mb-1">大会情報</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">アジア大会2026の情報をチェック</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ルールビュー -->
+    <section id="rules" class="view hidden fade-in">
+      <h2 class="text-2xl font-bold mb-6 text-primary dark:text-emerald-400">📖 ルール解説</h2>
+      <div id="rules-container" class="space-y-4">
+        <!-- JSでルールアコーディオンを描画 -->
+      </div>
+    </section>
+
+    <!-- 今何が？ビュー -->
+    <section id="situations" class="view hidden fade-in">
+      <h2 class="text-2xl font-bold mb-6 text-primary dark:text-emerald-400">❓ 今何が起きた？</h2>
+      <p class="mb-4">目の前で起きたことからルールを探しましょう。</p>
+      
+      <div id="situation-level-1" class="grid gap-3">
+        <!-- JSでシチュエーションボタンを描画 -->
+      </div>
+      
+      <div id="situation-level-2" class="hidden mt-6 bg-white dark:bg-slate-800 p-6 rounded-xl shadow border border-slate-200 dark:border-slate-700">
+        <button class="mb-4 text-sm text-primary font-bold flex items-center gap-1" onclick="resetSituation()">
+          ← 戻る
+        </button>
+        <h3 id="situation-title" class="text-xl font-bold mb-4"></h3>
+        <div id="situation-options" class="grid gap-3">
+          <!-- サブオプション -->
+        </div>
+        <div id="situation-result" class="hidden mt-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+          <!-- 結果表示 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 用語集ビュー -->
+    <section id="glossary" class="view hidden fade-in">
+      <h2 class="text-2xl font-bold mb-4 text-primary dark:text-emerald-400">📝 用語集</h2>
+      <input type="text" id="glossary-filter" placeholder="用語をフィルター..." class="w-full px-4 py-2 mb-6 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-secondary">
+      <div id="glossary-container" class="grid gap-4">
+        <!-- JSで用語集を描画 -->
+      </div>
+    </section>
+
+    <!-- 大会情報ビュー -->
+    <section id="tournament" class="view hidden fade-in">
+      <h2 class="text-2xl font-bold mb-6 text-primary dark:text-emerald-400">🏆 アジア大会2026 クリケット情報</h2>
+      <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <span class="text-2xl">🏟️</span>
+            <div><strong class="block text-lg">会場</strong>こおろぎスポーツパーク（愛知県日進市）</div>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-2xl">🏏</span>
+            <div><strong class="block text-lg">形式</strong>T20インターナショナル</div>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-2xl">📅</span>
+            <div>
+              <strong class="block text-lg">日程</strong>
+              <ul class="list-disc ml-5 mt-1">
+                <li>女子: 2026年9月17日〜22日</li>
+                <li>男子: 2026年9月24日〜10月3日</li>
+              </ul>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-2xl">🌍</span>
+            <div>
+              <strong class="block text-lg">参加チーム</strong>
+              <ul class="list-disc ml-5 mt-1">
+                <li>男子: 10チーム（インド、パキスタン、バングラデシュ、スリランカ、アフガニスタン、日本 等）</li>
+                <li>女子: 8チーム</li>
+              </ul>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-2xl">⚔️</span>
+            <div>
+              <strong class="block text-lg">トーナメント形式</strong>
+              <ul class="list-disc ml-5 mt-1">
+                <li>男子: グループステージ → 準々決勝 → 準決勝 → 決勝</li>
+                <li>女子: 直接ノックアウト方式（準々決勝から開始）</li>
+              </ul>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-2xl">🏅</span>
+            <div><strong class="block text-lg">メダル</strong>金・銀・銅メダル</div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- モバイル向けナビゲーション（下部固定） -->
+  <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white dark:bg-slate-800 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] border-t border-slate-200 dark:border-slate-700 z-50">
+    <ul class="flex justify-around items-center">
+      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="home"><span class="text-xl">🏠</span>ホーム</button></li>
+      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="rules"><span class="text-xl">📖</span>ルール</button></li>
+      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="situations"><span class="text-xl">❓</span>今何が？</button></li>
+      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="glossary"><span class="text-xl">📝</span>用語集</button></li>
+      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="tournament"><span class="text-xl">🏆</span>大会</button></li>
+    </ul>
+  </nav>
+
+  <script>
+    // --- データ定義 ---
+    
+    // カテゴリ別ルール
+    const rulesData = [
+      {
+        id: "cat1", title: "カテゴリ1: 基本ルール",
+        content: [
+          { term: "試合の目的", desc: "相手チームより多くのラン（得点）を獲得すること" },
+          { term: "チーム構成", desc: "各チーム11名。バッター、ボウラー、オールラウンダー、ウィケットキーパー" },
+          { term: "T20の試合の流れ", desc: "トス→先攻（バッティング）20オーバー→後攻20オーバー→多いチームの勝ち" },
+          { term: "オーバー（Over）", desc: "6球で1オーバー。20オーバー = 最大120球" },
+          { term: "イニングス（Innings）", desc: "各チーム1イニングス。全員アウトか20オーバー終了で交代" },
+          { term: "勝敗", desc: "①ラン数が多いチームの勝ち ②追いかけるチームが目標達成→即勝利 ③同点→スーパーオーバー" }
+        ]
+      },
+      {
+        id: "cat2", title: "カテゴリ2: バッティング（得点）",
+        content: [
+          { term: "ラン（Run）", desc: "バッター2人がピッチの反対側まで走ると1ラン。複数回走れば2ラン、3ラン" },
+          { term: "バウンダリー4（Four）", desc: "打球がグラウンドに沿って境界線を越えると自動的に4ラン" },
+          { term: "バウンダリー6（Six）", desc: "打球がノーバウンドで境界線を越えると6ラン" },
+          { term: "ストライク交代", desc: "オーバーの切り替え時、奇数ラン時にストライカー/ノンストライカーが交代" }
+        ]
+      },
+      {
+        id: "cat3", title: "カテゴリ3: ボウリング（投球）",
+        content: [
+          { term: "ボウラーの役割", desc: "クリケットの投手。腕を伸ばしたまま投げる（肘を曲げてはいけない）" },
+          { term: "オーバーの構成", desc: "正当な投球6球で1オーバー完了" },
+          { term: "T20のボウラー制限", desc: "1人のボウラーは最大4オーバーまで" },
+          { term: "ノーボール（No Ball）", desc: "クリースを踏み越えた投球。1ラン加算＋再投球＋次球フリーヒット" },
+          { term: "ワイド（Wide）", desc: "バッターが打てない位置への投球。1ラン加算＋再投球" },
+          { term: "フリーヒット（Free Hit）", desc: "ノーボールの次の球。通常の方法ではアウトにならない（ランアウトのみ可）" }
+        ]
+      },
+      {
+        id: "cat4", title: "カテゴリ4: フィールディング（守備）",
+        content: [
+          { term: "フィールドポジション", desc: "スリップ、ガリー、ポイント、カバー、ミッドウィケット、ミッドオン、ミッドオフ、スクエアレッグ、ファインレッグ、サードマン、ロング系ポジション" },
+          { term: "パワープレイ（Powerplay）", desc: "1〜6オーバー: 30ヤードサークル外に2人まで（攻撃的なバッティング有利）。7〜20オーバー: サークル外に5人まで" },
+          { term: "ウィケットキーパー", desc: "ウィケットの後ろに立つ唯一の守備選手。グローブ着用可" }
+        ]
+      },
+      {
+        id: "cat5", title: "カテゴリ5: ディスミサル（アウトの種類）全10種",
+        content: [
+          { term: "1. ボウルド（Bowled）", desc: "投球がウィケットに直接当たりベイルが落ちる ⚡頻度:高" },
+          { term: "2. コート（Caught）", desc: "打球がノーバウンドで野手に捕られる ⚡頻度:最高" },
+          { term: "3. LBW（Leg Before Wicket）", desc: "体がウィケットに当たるはずだったボールを遮る ⚡頻度:高" },
+          { term: "4. ランアウト（Run Out）", desc: "走塁中にウィケットが壊される ⚡頻度:中" },
+          { term: "5. スタンプト（Stumped）", desc: "バッターがクリースから出た際にキーパーがウィケットを壊す ⚡頻度:中" },
+          { term: "6. ヒットウィケット（Hit Wicket）", desc: "バッター自身がウィケットを壊す ⚡頻度:低" },
+          { term: "7. ハンドルドザボール（Handled the Ball）", desc: "故意にボールを手で触る ⚡頻度:極低" },
+          { term: "8. ヒットザボールトゥワイス（Hit the Ball Twice）", desc: "ボールを2回打つ ⚡頻度:極低" },
+          { term: "9. オブストラクティングザフィールド（Obstructing the Field）", desc: "守備を故意に妨害 ⚡頻度:極低" },
+          { term: "10. タイムドアウト（Timed Out）", desc: "前のバッターのアウト後、3分以内に準備できない ⚡頻度:極低" }
+        ]
+      },
+      {
+        id: "cat6", title: "カテゴリ6: エクストラ（追加得点）",
+        content: [
+          { term: "ワイド（Wide）", desc: "1ラン追加 + 再投球" },
+          { term: "ノーボール（No Ball）", desc: "1ラン追加 + 再投球 + フリーヒット" },
+          { term: "バイ（Bye）", desc: "ボールがバットにも体にも触れずに通過した際の走塁得点" },
+          { term: "レッグバイ（Leg Bye）", desc: "ボールがバッターの体に当たった際の走塁得点" },
+          { term: "ペナルティラン", desc: "ルール違反に対して5ラン加算" }
+        ]
+      },
+      {
+        id: "cat7", title: "カテゴリ7: 審判のシグナル",
+        content: [
+          { term: "アウト", desc: "<div class='text-center'><span class='signal-icon signal-bounce'>☝️</span><br>人差し指を上に上げる</div>" },
+          { term: "ノットアウト", desc: "<div class='text-center'><span class='signal-icon'>🙅</span><br>両手を開いて前に出す</div>" },
+          { term: "シックス", desc: "<div class='text-center'><span class='signal-icon signal-bounce'>🙌</span><br>両手を頭上に上げる</div>" },
+          { term: "フォー", desc: "<div class='text-center'><span class='signal-icon signal-swing'>👋</span><br>腕を左右に振る</div>" },
+          { term: "ワイド", desc: "<div class='text-center'><span class='signal-icon'>🤸</span><br>両手を水平に広げる</div>" },
+          { term: "ノーボール", desc: "<div class='text-center'><span class='signal-icon'>💪</span><br>片腕を水平に伸ばす</div>" },
+          { term: "バイ", desc: "<div class='text-center'><span class='signal-icon'>✋</span><br>片手を頭上に上げる</div>" },
+          { term: "レッグバイ", desc: "<div class='text-center'><span class='signal-icon'>🦵</span><br>膝を軽くタッチ</div>" },
+          { term: "デッドボール", desc: "<div class='text-center'><span class='signal-icon'>❌</span><br>両手をクロスさせる</div>" },
+          { term: "フリーヒット", desc: "<div class='text-center'><span class='signal-icon signal-spin'>🔄</span><br>片手を頭上で回す</div>" },
+          { term: "新しいボール", desc: "<div class='text-center'><span class='signal-icon'>🏏</span><br>ボールを頭上に掲げる</div>" },
+          { term: "パワープレイ", desc: "<div class='text-center'><span class='signal-icon'>⭕</span><br>腕でサークルを描く</div>" },
+          { term: "DRS", desc: "<div class='text-center'><span class='signal-icon'>🅃</span><br>両手でT字を作る</div>" }
+        ]
+      },
+      {
+        id: "cat8", title: "カテゴリ8: T20特有ルール",
+        content: [
+          { term: "20オーバー制限", desc: "各チーム最大20オーバー（120球）" },
+          { term: "ボウラー制限", desc: "1人最大4オーバー" },
+          { term: "パワープレイ", desc: "1-6オーバーの守備制限" },
+          { term: "フリーヒット", desc: "ノーボール後の特別ルール" },
+          { term: "スーパーオーバー（Super Over）", desc: "同点時の延長。各チーム1オーバー（6球）で決着" },
+          { term: "DRS", desc: "各チーム2回まで判定に異議申し立て可能" },
+          { term: "ボウリングスピード制限", desc: "オーバーレート違反にはペナルティ（フィールダー制限追加）" },
+          { term: "タイムアウト", desc: "各イニングス中に2回の戦略的タイムアウト（各2.5分）" }
+        ]
+      },
+      {
+        id: "cat9", title: "カテゴリ9: DLS方式",
+        content: [
+          { term: "概要", desc: "天候中断時にスコアを公平に再計算する方式" },
+          { term: "基本原理", desc: "チームの得点力は「残りオーバー数」と「残りウィケット数」の2つのリソースで決まる" },
+          { term: "適用例", desc: "先攻180ラン → 雨で後攻が15オーバーに短縮 → DLSで新たな目標スコアを算出" },
+          { term: "重要", desc: "T20では天候中断がある場合に使用される" }
+        ]
+      }
+    ];
+
+    // 用語集データ (50語以上)
+    const glossaryData = [
+      { en: "Batsman/Batter", ja: "バッター", desc: "ボールを打つ選手。2人一組でピッチに入る。" },
+      { en: "Bowler", ja: "ボウラー", desc: "ボールを投げる選手。肘を曲げずに投げる必要がある。" },
+      { en: "Wicket", ja: "ウィケット", desc: "ピッチの両端にある3本の棒（スタンプ）と上のベイルからなる標的。" },
+      { en: "Stump", ja: "スタンプ", desc: "ウィケットを構成する3本の縦の木の棒。" },
+      { en: "Bail", ja: "ベイル", desc: "スタンプの上に乗っている2つの小さな木片。" },
+      { en: "Crease", ja: "クリース", desc: "ピッチに引かれたライン。打者・投手の安全地帯の境界線。" },
+      { en: "Pitch", ja: "ピッチ", desc: "グラウンド中央にある長さ22ヤードの長方形のエリア。投球が行われる。" },
+      { en: "Over", ja: "オーバー", desc: "正当な投球6球のまとまり。1オーバーごとに投手が交代する。" },
+      { en: "Innings", ja: "イニングス", desc: "各チームの攻撃（バッティング）の回。T20では各1回。" },
+      { en: "Run", ja: "ラン", desc: "得点のこと。バッターがピッチ間を走ることで獲得。" },
+      { en: "Boundary", ja: "バウンダリー", desc: "グラウンドの境界線。ここを超えると4または6ラン。" },
+      { en: "Four", ja: "フォー", desc: "打球がグラウンドにバウンドして境界線を越えること。4ラン。" },
+      { en: "Six", ja: "シックス", desc: "打球がノーバウンドで境界線を越えること。6ラン。" },
+      { en: "Wide", ja: "ワイド", desc: "打者が打てないほど遠くに投げる反則球。1ラン加算と再投球。" },
+      { en: "No Ball", ja: "ノーボール", desc: "投手がクリースを越える等の反則球。1ラン加算、再投球、次球フリーヒット。" },
+      { en: "Free Hit", ja: "フリーヒット", desc: "ノーボールの次の球。ランアウト以外のアウトにならない。" },
+      { en: "LBW", ja: "LBW（レッグ・ビフォア・ウィケット）", desc: "体がウィケットに当たるはずのボールを遮ってアウトになること。" },
+      { en: "Caught", ja: "コート", desc: "打球がノーバウンドで野手に捕球されてアウトになること。" },
+      { en: "Bowled", ja: "ボウルド", desc: "投球がウィケットに直接当たりアウトになること。" },
+      { en: "Run Out", ja: "ランアウト", desc: "走塁中に野手によってウィケットが壊されてアウトになること。" },
+      { en: "Stumped", ja: "スタンプト", desc: "打者がクリースから出た隙にキーパーがウィケットを壊すアウト。" },
+      { en: "Hit Wicket", ja: "ヒットウィケット", desc: "打者が自身のバットや体でウィケットを壊すアウト。" },
+      { en: "Duck", ja: "ダック", desc: "0点でアウトになること。" },
+      { en: "Golden Duck", ja: "ゴールデンダック", desc: "最初の1球目で0点アウトになること。" },
+      { en: "Century", ja: "センチュリー", desc: "1人の打者が1試合で100ランを獲得すること。" },
+      { en: "Half Century", ja: "ハーフセンチュリー", desc: "1人の打者が1試合で50ランを獲得すること。" },
+      { en: "Maiden Over", ja: "メイデンオーバー", desc: "1オーバー（6球）の間に1点も取られなかったオーバー。" },
+      { en: "Yorker", ja: "ヨーカー", desc: "打者の足元を狙う非常に低い投球。" },
+      { en: "Bouncer", ja: "バウンサー", desc: "短くバウンドさせ、打者の頭や胸の高さを狙う投球。" },
+      { en: "Full Toss", ja: "フルトス", desc: "ノーバウンドで打者の腰の高さ付近にくる投球。" },
+      { en: "Googly", ja: "グーグリー", desc: "レッグスピンの投手が投げる、逆方向に曲がる変化球。" },
+      { en: "Leg Spin", ja: "レッグスピン", desc: "右投手が右手首を使って、打者の脚側から外側へ曲がるように投げる球。" },
+      { en: "Off Spin", ja: "オフスピン", desc: "右投手が指を使って、打者の外側から内側へ曲がるように投げる球。" },
+      { en: "Swing", ja: "スイング", desc: "空中でボールの軌道が曲がる投球。" },
+      { en: "Seam", ja: "シーム", desc: "ボールの縫い目。縫い目をバウンドさせて変化させる投球。" },
+      { en: "Slip", ja: "スリップ", desc: "キーパーの横（打者の背後）の守備位置。" },
+      { en: "Gully", ja: "ガリー", desc: "スリップのさらに外側の守備位置。" },
+      { en: "Point", ja: "ポイント", desc: "打者の真横付近の守備位置。" },
+      { en: "Cover", ja: "カバー", desc: "打者の斜め前方の守備位置。" },
+      { en: "Mid-Wicket", ja: "ミッドウィケット", desc: "打者の脚側の斜め前方の守備位置。" },
+      { en: "Mid-On", ja: "ミッドオン", desc: "投手の背後、打者の脚側の守備位置。" },
+      { en: "Mid-Off", ja: "ミッドオフ", desc: "投手の背後、打者の外側の守備位置。" },
+      { en: "Fine Leg", ja: "ファインレッグ", desc: "打者の背後、脚側の守備位置。" },
+      { en: "Third Man", ja: "サードマン", desc: "スリップの後方深くの守備位置。" },
+      { en: "Square Leg", ja: "スクエアレッグ", desc: "打者の真横（脚側）の守備位置。" },
+      { en: "Long On", ja: "ロングオン", desc: "ミッドオンより後方、境界線近くの守備位置。" },
+      { en: "Long Off", ja: "ロングオフ", desc: "ミッドオフより後方、境界線近くの守備位置。" },
+      { en: "Deep", ja: "ディープ", desc: "境界線近くの深い守備位置を指す言葉。" },
+      { en: "Silly", ja: "シリー", desc: "打者に非常に近い危険な守備位置を指す言葉。" },
+      { en: "Powerplay", ja: "パワープレイ", desc: "守備制限ルール。T20では1〜6オーバーに適用され、外野に2人しか配置できない。" },
+      { en: "DRS", ja: "DRS（判定見直しシステム）", desc: "チームが審判の判定に異議を唱え、映像判定を要求するシステム。" },
+      { en: "Super Over", ja: "スーパーオーバー", desc: "同点時の延長戦。各チーム1オーバー（6球）ずつ行い勝敗を決める。" },
+      { en: "Extras", ja: "エクストラ", desc: "バットで打たずに得た追加点（ワイド、ノーボール、バイ等）。" },
+      { en: "Bye", ja: "バイ", desc: "ボールがバットにも体にも触れず後方に抜けた間に走って得る得点。" },
+      { en: "Leg Bye", ja: "レッグバイ", desc: "ボールが打者の体に当たり（反則でない場合）、走って得る得点。" },
+      { en: "Follow On", ja: "フォローオン", desc: "テストマッチ等で、先攻が点差を付けた場合、後攻に続けて2回目の攻撃をさせること。" },
+      { en: "All-rounder", ja: "オールラウンダー", desc: "バッティングもボウリングも両方得意とする選手。" },
+      { en: "Wicket-keeper", ja: "ウィケットキーパー", desc: "打者の後ろで捕球する守備の要。唯一グローブを着用できる。" },
+      { en: "Appeal", ja: "アピール", desc: "守備側が「Howzat?（ハウザット）」と叫び、審判にアウトを要求すること。" },
+      { en: "Hat-trick", ja: "ハットトリック", desc: "1人の投手が3球連続で3人の打者をアウトにすること。" },
+      { en: "Not Out", ja: "ノットアウト", desc: "打者がまだアウトになっていない状態。" },
+      { en: "Declare", ja: "ディクレア", desc: "テストマッチ等で、自発的に攻撃（イニング）を終了すること。" }
+    ];
+
+    // シチュエーションデータ
+    const situationData = [
+      {
+        id: "s1", label: "☝️ 審判が指を上げた",
+        options: [
+          { label: "ボウラーが投げた直後", result: "<strong>ボウルド（Bowled）</strong>または<strong>LBW</strong>の可能性があります。<br>投球が直接ウィケットに当たればボウルド、バッターの足などが防いでいればLBWです。" },
+          { label: "バッターが打った後、野手がキャッチ", result: "<strong>コート（Caught）</strong>のアウトです。<br>打球がノーバウンドで守備に捕られました。" },
+          { label: "バッターが走っている途中", result: "<strong>ランアウト（Run Out）</strong>のアウトです。<br>バッターがクリース（安全地帯）に到達する前に、ボールでウィケットが壊されました。" },
+          { label: "バッターが前に出た直後", result: "<strong>スタンプト（Stumped）</strong>のアウトです。<br>バッターが打とうと前に出てクリースを離れた瞬間に、ウィケットキーパーがウィケットを壊しました。" }
+        ]
+      },
+      {
+        id: "s2", label: "🤸 審判が腕を水平に広げた",
+        options: [
+          { label: "腕を両側に広げた", result: "<strong>ワイド（Wide）</strong>です。<br>バッターが打てないほど遠い投球の反則です。バッティング側に1ランが入り、この球はオーバーの球数にカウントされず投げ直しになります。" }
+        ]
+      },
+      {
+        id: "s3", label: "💪 審判が片腕を水平に伸ばした",
+        options: [
+          { label: "片腕を真横に伸ばした", result: "<strong>ノーボール（No Ball）</strong>です。<br>ボウラーの足がラインを越えた等の反則です。1ラン加算＋投げ直し。さらに次の球は「フリーヒット」となり、通常のアウトが免除されます。" }
+        ]
+      },
+      {
+        id: "s4", label: "💥 ボールが境界線を越えた",
+        options: [
+          { label: "グラウンドを転がって越えた", result: "<strong>バウンダリー4（Four）</strong>です。<br>自動的に4ランがバッターに加算されます。" },
+          { label: "ノーバウンドで越えた", result: "<strong>バウンダリー6（Six）</strong>です。<br>野球のホームランに相当し、6ランが加算されます。" }
+        ]
+      },
+      {
+        id: "s5", label: "🏃‍♂️ バッターが走っている",
+        options: [
+          { label: "ピッチを行き来している", result: "<strong>ラン（Run）</strong>を獲得しています。<br>2人のバッターがピッチの反対側まで無事に走れば1ラン。戻れば2ランと加算されます。" }
+        ]
+      },
+      {
+        id: "s6", label: "🗣️ 選手が叫んでアピールしている",
+        options: [
+          { label: "「ハウザット？」と叫んでいる", result: "<strong>アピール（Appeal）</strong>です。<br>守備側は「How's that?」と叫んで審判にアウトを求めないと、アウトが宣告されません。" }
+        ]
+      },
+      {
+        id: "s7", label: "📺 リプレイ映像が流れている",
+        options: [
+          { label: "選手がT字サインを出した", result: "<strong>DRS（判定見直しシステム）</strong>が要求されました。<br>審判の判定に対し、チームがテクノロジーを使った映像判定を求めています（T20では各チーム2回まで）。" }
+        ]
+      },
+      {
+        id: "s8", label: "☔ 試合が中断・終了した",
+        options: [
+          { label: "雨で中断後、目標スコアが変わった", result: "<strong>DLS方式</strong>が適用されました。<br>天候によるオーバー数減少に対して、残りリソースから公平な新目標スコアを計算する複雑な数式です。" },
+          { label: "同点で試合が終わった", result: "<strong>スーパーオーバー（Super Over）</strong>が行われます。<br>延長戦として各チーム1オーバー（6球）ずつ戦い、勝者を決めます。" }
+        ]
+      }
+    ];
+
+    // --- DOM操作 ---
+    
+    // タブ切り替え
+    function switchTab(targetId) {
+      document.querySelectorAll('.view').forEach(el => el.classList.add('hidden'));
+      document.getElementById(targetId).classList.remove('hidden');
+      
+      // ボタンのアクティブ状態
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if(btn.dataset.target === targetId) {
+          btn.classList.add('text-primary', 'dark:text-emerald-400');
+          if(!btn.closest('nav').classList.contains('md:hidden')) {
+             btn.classList.add('bg-slate-100', 'dark:bg-slate-700');
+          }
+        } else {
+          btn.classList.remove('text-primary', 'dark:text-emerald-400', 'bg-slate-100', 'dark:bg-slate-700');
+        }
+      });
+      window.scrollTo(0,0);
+    }
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        switchTab(e.currentTarget.dataset.target);
+      });
+    });
+
+    // ダークモードトグル
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      if (document.documentElement.classList.contains('dark')) {
+        themeToggle.textContent = '☀️';
+      } else {
+        themeToggle.textContent = '🌙';
+      }
+    });
+    // 初期設定
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+      themeToggle.textContent = '☀️';
+    }
+
+    // ルールの描画（アコーディオン）
+    const rulesContainer = document.getElementById('rules-container');
+    rulesData.forEach(cat => {
+      // 審判シグナルはカード形式のグリッドで描画
+      if (cat.id === 'cat7') {
+        let html = `<div class="bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <button class="w-full text-left px-4 py-4 font-bold bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 transition flex justify-between items-center" onclick="toggleAccordion('acc-${cat.id}')">
+            ${cat.title}
+            <span class="transform transition-transform text-lg" id="icon-${cat.id}">▼</span>
+          </button>
+          <div id="acc-${cat.id}" class="hidden p-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">`;
+        
+        cat.content.forEach(item => {
+          html += `<div class="text-center p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+            ${item.desc}
+            <p class="text-xs font-bold mt-1 text-primary dark:text-emerald-400">${item.term}</p>
+          </div>`;
+        });
+        html += `</div></div></div>`;
+        rulesContainer.innerHTML += html;
+        return;
+      }
+
+      let html = `<div class="bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <button class="w-full text-left px-4 py-4 font-bold bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 transition flex justify-between items-center" onclick="toggleAccordion('acc-${cat.id}')">
+          ${cat.title}
+          <span class="transform transition-transform text-lg" id="icon-${cat.id}">▼</span>
+        </button>
+        <div id="acc-${cat.id}" class="hidden p-4 space-y-3">`;
+      
+      cat.content.forEach(item => {
+        html += `<div class="border-b border-slate-100 dark:border-slate-700 pb-2 last:border-0 last:pb-0">
+          <strong class="text-primary dark:text-emerald-400">${item.term}</strong>
+          <p class="text-sm mt-1">${item.desc}</p>
+        </div>`;
+      });
+      html += `</div></div>`;
+      rulesContainer.innerHTML += html;
+    });
+
+    function toggleAccordion(id) {
+      const el = document.getElementById(id);
+      const catId = id.replace('acc-', '');
+      const icon = document.getElementById('icon-' + catId);
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        el.classList.add('hidden');
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // 特定のカテゴリのアコーディオンを開く
+    function openAccordion(catId) {
+      const el = document.getElementById('acc-' + catId);
+      const icon = document.getElementById('icon-' + catId);
+      if (el && el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // 用語集の描画
+    const glossaryContainer = document.getElementById('glossary-container');
+    function renderGlossary(filter = "") {
+      glossaryContainer.innerHTML = "";
+      const lowerFilter = filter.toLowerCase();
+      
+      const filtered = glossaryData.filter(item => 
+        item.en.toLowerCase().includes(lowerFilter) || 
+        item.ja.includes(lowerFilter) || 
+        item.desc.includes(filter)
+      );
+
+      if (filtered.length === 0) {
+        glossaryContainer.innerHTML = "<p class='text-center text-slate-500'>見つかりませんでした。</p>";
+        return;
+      }
+
+      filtered.forEach(item => {
+        glossaryContainer.innerHTML += `
+          <div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow border-l-4 border-secondary">
+            <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">${item.ja} <span class="text-sm font-normal text-slate-500 dark:text-slate-400">(${item.en})</span></h3>
+            <p class="text-sm mt-2 text-slate-700 dark:text-slate-300">${item.desc}</p>
+          </div>
+        `;
+      });
+    }
+    renderGlossary();
+    document.getElementById('glossary-filter').addEventListener('input', (e) => renderGlossary(e.target.value));
+
+    // シチュエーションの描画
+    const sitLevel1 = document.getElementById('situation-level-1');
+    const sitLevel2 = document.getElementById('situation-level-2');
+    const sitTitle = document.getElementById('situation-title');
+    const sitOptions = document.getElementById('situation-options');
+    const sitResult = document.getElementById('situation-result');
+
+    situationData.forEach(sit => {
+      const btn = document.createElement('button');
+      btn.className = "w-full text-left p-4 bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 font-bold hover:border-primary hover:text-primary transition flex justify-between items-center";
+      btn.innerHTML = `<span>${sit.label}</span> <span>→</span>`;
+      btn.onclick = () => showSituationLevel2(sit);
+      sitLevel1.appendChild(btn);
+    });
+
+    function showSituationLevel2(sit) {
+      sitLevel1.classList.add('hidden');
+      sitLevel2.classList.remove('hidden');
+      sitResult.classList.add('hidden');
+      sitTitle.textContent = sit.label;
+      sitOptions.innerHTML = "";
+      
+      sit.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-3 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition";
+        btn.textContent = opt.label;
+        btn.onclick = () => {
+          sitResult.innerHTML = opt.result;
+          sitResult.classList.remove('hidden');
+        };
+        sitOptions.appendChild(btn);
+      });
+    }
+
+    function resetSituation() {
+      sitLevel2.classList.add('hidden');
+      sitLevel1.classList.remove('hidden');
+    }
+
+    // 検索機能 (リアルタイム)
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+
+    // 検索用データベース作成
+    const searchDb = [];
+    rulesData.forEach(cat => {
+      cat.content.forEach(item => {
+        searchDb.push({ type: 'ルール', term: item.term, desc: item.desc, target: 'rules', catId: cat.id });
+      });
+    });
+    glossaryData.forEach(item => {
+      searchDb.push({ type: '用語', term: item.ja, en: item.en, desc: item.desc, target: 'glossary' });
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      searchResults.innerHTML = "";
+      if (query.length < 1) {
+        searchResults.classList.add('hidden');
+        return;
+      }
+      
+      const hits = searchDb.filter(item => {
+        return (item.term && item.term.toLowerCase().includes(query)) ||
+               (item.en && item.en.toLowerCase().includes(query)) ||
+               (item.desc && item.desc.toLowerCase().includes(query));
+      }).slice(0, 10); // 上限10件
+
+      if (hits.length === 0) {
+        searchResults.innerHTML = "<li class='p-2 text-sm text-slate-500'>見つかりませんでした。</li>";
+        searchResults.classList.remove('hidden');
+        return;
+      }
+
+      hits.forEach(hit => {
+        const li = document.createElement('li');
+        li.className = "p-2 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 rounded";
+        li.innerHTML = `<span class="text-xs bg-slate-200 dark:bg-slate-600 px-1 rounded mr-1">${hit.type}</span> <strong>${hit.term}</strong>`;
+        li.addEventListener('click', () => {
+          switchTab(hit.target);
+          searchResults.classList.add('hidden');
+          searchInput.value = "";
+          if (hit.target === 'glossary') {
+            document.getElementById('glossary-filter').value = hit.term;
+            renderGlossary(hit.term);
+          } else if (hit.target === 'rules' && hit.catId) {
+            // 該当カテゴリのアコーディオンを開く
+            openAccordion(hit.catId);
+            // アコーディオンが開いた後、該当セクションまでスクロール
+            setTimeout(() => {
+              const accEl = document.getElementById('acc-' + hit.catId);
+              if (accEl) accEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+          }
+        });
+        searchResults.appendChild(li);
+      });
+      searchResults.classList.remove('hidden');
+    });
+
+    // 検索ボックス外クリックで閉じる
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.classList.add('hidden');
+      }
+    });
+
+    // 初期タブ
+    switchTab('home');
+
+  </script>
+</body>
+</html>

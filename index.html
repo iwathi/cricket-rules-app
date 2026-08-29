@@ -51,7 +51,14 @@
   <header class="bg-primary text-white p-4 shadow-md sticky top-0 z-40">
     <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
       <div class="flex justify-between items-center w-full md:w-auto">
-        <h1 class="text-xl font-bold flex items-center gap-2">🏏 クリケットルールブック</h1>
+        <div class="flex items-center gap-2">
+          <button id="back-btn" class="hidden p-1 rounded hover:bg-white/20 transition cursor-pointer" onclick="handleBackBtn()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          </button>
+          <h1 class="text-xl font-bold flex items-center gap-2 cursor-pointer hover:opacity-80 transition" onclick="switchTab('home')">🏏 クリケットルールブック</h1>
+        </div>
         <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/20 transition">🌙</button>
       </div>
       <div class="relative w-full md:w-64">
@@ -63,12 +70,13 @@
 
   <!-- PC向けナビゲーション -->
   <nav class="hidden md:block bg-white dark:bg-slate-800 shadow border-b border-slate-200 dark:border-slate-700 sticky top-[76px] z-20">
-    <ul class="max-w-4xl mx-auto flex justify-center space-x-2 p-2">
-      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="home">🏠 ホーム</button></li>
-      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="rules">📖 ルール</button></li>
-      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="situations">❓ 今何が？</button></li>
-      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="glossary">📝 用語集</button></li>
-      <li><button class="nav-btn px-4 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="tournament">🏆 大会情報</button></li>
+    <ul class="max-w-4xl mx-auto flex justify-center space-x-1 p-2 text-sm lg:text-base">
+      <li><button class="nav-btn px-3 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="home">🏠 ホーム</button></li>
+      <li><button class="nav-btn px-3 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="rules">📖 ルール</button></li>
+      <li><button class="nav-btn px-3 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="situations">❓ 今何が？</button></li>
+      <li><button class="nav-btn px-3 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="glossary">📝 用語集</button></li>
+      <li><button class="nav-btn px-3 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="tournament">🏆 大会</button></li>
+      <li><button class="nav-btn px-3 py-2 rounded-lg font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition" data-target="live">📺 観戦</button></li>
     </ul>
   </nav>
 
@@ -79,6 +87,11 @@
     <section id="home" class="view fade-in">
       <h2 class="text-2xl font-bold mb-6 text-primary dark:text-emerald-400">ようこそ！クリケットの世界へ</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-red-500 hover:scale-105 transition" onclick="switchTab('live')">
+          <div class="text-4xl mb-2">📺</div>
+          <h3 class="font-bold text-lg mb-1">ライブ観戦トラッカー</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-400">試合を追いながらリアルタイムでルール解説</p>
+        </div>
         <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow cursor-pointer border-l-4 border-primary hover:scale-105 transition" onclick="switchTab('rules')">
           <div class="text-4xl mb-2">📖</div>
           <h3 class="font-bold text-lg mb-1">ルールを学ぶ</h3>
@@ -100,6 +113,149 @@
           <p class="text-sm text-slate-600 dark:text-slate-400">アジア大会2026の情報をチェック</p>
         </div>
       </div>
+    </section>
+
+    <!-- ライブ観戦トラッカー ビュー -->
+    <section id="live" class="view hidden fade-in">
+      <h2 class="text-2xl font-bold mb-6 text-primary dark:text-emerald-400">📺 ライブ観戦トラッカー</h2>
+      
+      <!-- ステップ1: セットアップ -->
+      <div id="live-phase-setup" class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow border border-slate-200 dark:border-slate-700">
+        <h3 class="text-lg font-bold mb-4">試合のセットアップ</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-bold mb-1">チームA</label>
+            <input type="text" id="team-a-input" placeholder="Team A" class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white">
+          </div>
+          <div>
+            <label class="block text-sm font-bold mb-1">チームB</label>
+            <input type="text" id="team-b-input" placeholder="Team B" class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white">
+          </div>
+          <button class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-emerald-700 transition" onclick="startMatchSetup()">試合を開始</button>
+        </div>
+      </div>
+
+      <!-- ステップ2: トス -->
+      <div id="live-phase-toss" class="hidden bg-white dark:bg-slate-800 p-6 rounded-xl shadow border border-slate-200 dark:border-slate-700">
+        <h3 class="text-lg font-bold mb-4">トス（コイントス）</h3>
+        <p class="text-sm mb-4">クリケットではトスに勝ったチームが先攻（バッティング）か後攻（ボウリング）を選びます。</p>
+        
+        <div class="mb-4">
+          <label class="block font-bold mb-2">どちらがトスに勝ちましたか？</label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2"><input type="radio" name="toss_winner" value="A" id="toss-winner-a" checked> <span id="label-toss-a">チームA</span></label>
+            <label class="flex items-center gap-2"><input type="radio" name="toss_winner" value="B" id="toss-winner-b"> <span id="label-toss-b">チームB</span></label>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <label class="block font-bold mb-2">何を選択しましたか？</label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2"><input type="radio" name="toss_decision" value="bat" checked> バッティング（先攻）</label>
+            <label class="flex items-center gap-2"><input type="radio" name="toss_decision" value="bowl"> ボウリング（後攻）</label>
+          </div>
+        </div>
+
+        <button class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-emerald-700 transition" onclick="processToss()">試合開始</button>
+      </div>
+
+      <!-- ステップ3: プレイ中 -->
+      <div id="live-phase-playing" class="hidden flex flex-col gap-4">
+        
+        <!-- スコアボード (Sticky) -->
+        <div class="sticky top-[76px] md:top-[124px] z-10 bg-slate-900 text-white p-4 rounded-xl shadow-lg border border-slate-700">
+          <div class="flex justify-between items-center mb-2">
+            <div class="text-sm font-bold text-slate-300" id="sb-innings-text">第1イニングス</div>
+            <div class="text-sm font-bold text-secondary" id="sb-phase-info">⚡ パワープレイ中 (1-6ov)</div>
+          </div>
+          <div class="flex justify-between items-end mb-2">
+            <div>
+              <div class="text-xl font-bold" id="sb-batting-team">Team A</div>
+              <div class="text-3xl font-bold">
+                <span id="sb-runs">0</span><span class="text-slate-400 text-xl">/</span><span id="sb-wickets">0</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-lg font-bold"><span id="sb-overs">0.0</span> <span class="text-sm text-slate-400">ov</span></div>
+              <div class="text-sm text-slate-300">RR: <span id="sb-rr">0.00</span></div>
+            </div>
+          </div>
+          <div class="border-t border-slate-700 pt-2 flex gap-1 overflow-x-auto" id="sb-current-over">
+          </div>
+        </div>
+
+        <!-- 状況解説エリア -->
+        <div id="live-commentary" class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl shadow border border-blue-200 dark:border-blue-800 min-h-[100px] flex items-center">
+          <p id="live-commentary-text" class="text-slate-800 dark:text-slate-200 fade-in w-full text-center font-bold">試合開始！</p>
+        </div>
+
+        <!-- イベント入力グリッド -->
+        <div class="grid grid-cols-2 gap-3" id="live-event-buttons">
+          <button class="py-4 text-xl font-bold bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition" onclick="recordBall('0')">0 <span class="block text-xs font-normal text-slate-500">ドット</span></button>
+          <button class="py-4 text-xl font-bold bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition" onclick="recordBall('1')">1 <span class="block text-xs font-normal text-slate-500">ラン</span></button>
+          <button class="py-4 text-xl font-bold bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition" onclick="recordBall('2')">2 <span class="block text-xs font-normal text-slate-500">ラン</span></button>
+          <button class="py-4 text-xl font-bold bg-white dark:bg-slate-800 rounded-xl shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition" onclick="recordBall('3')">3 <span class="block text-xs font-normal text-slate-500">ラン</span></button>
+          <button class="py-4 text-xl font-bold bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 rounded-xl shadow border border-yellow-300 dark:border-yellow-700 hover:bg-yellow-200 transition" onclick="recordBall('4')">4 <span class="block text-xs font-normal text-yellow-600 dark:text-yellow-400">バウンダリー</span></button>
+          <button class="py-4 text-xl font-bold bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 rounded-xl shadow border border-orange-300 dark:border-orange-700 hover:bg-orange-200 transition" onclick="recordBall('6')">6 <span class="block text-xs font-normal text-orange-600 dark:text-orange-400">シックス</span></button>
+          
+          <button class="py-4 text-xl font-bold bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl shadow border border-red-200 dark:border-red-800 hover:bg-red-100 transition" onclick="recordBall('Wd')">Wd <span class="block text-xs font-normal">ワイド</span></button>
+          <button class="py-4 text-xl font-bold bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl shadow border border-red-200 dark:border-red-800 hover:bg-red-100 transition" onclick="recordBall('Nb')">Nb <span class="block text-xs font-normal">ノーボール</span></button>
+          
+          <button class="py-4 text-xl font-bold bg-red-500 text-white rounded-xl shadow border border-red-600 hover:bg-red-600 transition" onclick="showWicketModal()">W <span class="block text-xs font-normal text-red-100">ウィケット</span></button>
+          <button class="py-4 text-xl font-bold bg-slate-200 dark:bg-slate-700 rounded-xl shadow border border-slate-300 dark:border-slate-600 hover:bg-slate-300 transition" onclick="toggleExtrasMenu()">... <span class="block text-xs font-normal">その他</span></button>
+        </div>
+
+        <div id="extras-menu" class="hidden grid grid-cols-2 gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+          <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold" onclick="recordBall('B1')">バイ 1</button>
+          <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold" onclick="recordBall('B2')">バイ 2</button>
+          <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold" onclick="recordBall('LB1')">レッグバイ 1</button>
+          <button class="py-2 bg-white dark:bg-slate-700 rounded shadow font-bold" onclick="recordBall('LB2')">レッグバイ 2</button>
+        </div>
+
+        <div class="flex justify-between items-center mt-2">
+          <button class="text-sm font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white underline p-2" onclick="undoLastBall()">← 1球元に戻す</button>
+          <button id="btn-next-innings" class="hidden px-4 py-2 bg-primary text-white font-bold rounded-lg" onclick="startInnings2()">第2イニングスへ</button>
+        </div>
+      </div>
+
+      <!-- ウィケット選択モーダル -->
+      <div id="wicket-modal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-xl shadow-xl overflow-hidden">
+          <div class="p-4 bg-red-500 text-white font-bold flex justify-between items-center">
+            <span>アウトの種類を選択</span>
+            <button onclick="hideWicketModal()" class="text-2xl leading-none">&times;</button>
+          </div>
+          <div class="p-4 grid gap-2 max-h-[60vh] overflow-y-auto">
+            <button class="w-full text-left p-3 bg-slate-50 dark:bg-slate-700 rounded hover:bg-slate-200 transition font-bold" onclick="recordWicket('ボウルド')">ボウルド (Bowled)</button>
+            <button class="w-full text-left p-3 bg-slate-50 dark:bg-slate-700 rounded hover:bg-slate-200 transition font-bold" onclick="recordWicket('コート')">コート (Caught)</button>
+            <button class="w-full text-left p-3 bg-slate-50 dark:bg-slate-700 rounded hover:bg-slate-200 transition font-bold" onclick="recordWicket('LBW')">LBW</button>
+            <button class="w-full text-left p-3 bg-slate-50 dark:bg-slate-700 rounded hover:bg-slate-200 transition font-bold" onclick="recordWicket('ランアウト')">ランアウト (Run Out)</button>
+            <button class="w-full text-left p-3 bg-slate-50 dark:bg-slate-700 rounded hover:bg-slate-200 transition font-bold" onclick="recordWicket('スタンプト')">スタンプト (Stumped)</button>
+            <button class="w-full text-left p-3 bg-slate-50 dark:bg-slate-700 rounded hover:bg-slate-200 transition font-bold" onclick="recordWicket('ヒットウィケット')">ヒットウィケット (Hit Wicket)</button>
+            <button class="w-full text-left p-3 bg-slate-50 dark:bg-slate-700 rounded hover:bg-slate-200 transition font-bold" onclick="recordWicket('その他')">その他</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 試合終了フェーズ -->
+      <div id="live-phase-finished" class="hidden bg-white dark:bg-slate-800 p-6 rounded-xl shadow border border-slate-200 dark:border-slate-700 text-center">
+        <h3 class="text-2xl font-bold mb-2">試合終了！</h3>
+        <p id="match-result-text" class="text-xl text-primary dark:text-emerald-400 font-bold mb-6"></p>
+        
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+            <div id="result-team1-name" class="font-bold text-sm text-slate-500 mb-1"></div>
+            <div id="result-team1-score" class="text-2xl font-bold"></div>
+          </div>
+          <div class="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+            <div id="result-team2-name" class="font-bold text-sm text-slate-500 mb-1"></div>
+            <div id="result-team2-score" class="text-2xl font-bold"></div>
+          </div>
+        </div>
+
+        <button class="w-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white font-bold py-3 rounded-lg hover:bg-slate-300 transition" onclick="resetLiveTracker()">新しい試合を開始</button>
+      </div>
+
     </section>
 
     <!-- ルールビュー -->
@@ -198,11 +354,12 @@
   <!-- モバイル向けナビゲーション（下部固定） -->
   <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white dark:bg-slate-800 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] border-t border-slate-200 dark:border-slate-700 z-50">
     <ul class="flex justify-around items-center">
-      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="home"><span class="text-xl">🏠</span>ホーム</button></li>
-      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="rules"><span class="text-xl">📖</span>ルール</button></li>
-      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="situations"><span class="text-xl">❓</span>今何が？</button></li>
-      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="glossary"><span class="text-xl">📝</span>用語集</button></li>
-      <li class="w-1/5"><button class="nav-btn w-full py-3 flex flex-col items-center justify-center text-xs gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="tournament"><span class="text-xl">🏆</span>大会</button></li>
+      <li class="w-1/6"><button class="nav-btn w-full py-2 flex flex-col items-center justify-center text-[10px] gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="home"><span class="text-lg">🏠</span>ホーム</button></li>
+      <li class="w-1/6"><button class="nav-btn w-full py-2 flex flex-col items-center justify-center text-[10px] gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="rules"><span class="text-lg">📖</span>ルール</button></li>
+      <li class="w-1/6"><button class="nav-btn w-full py-2 flex flex-col items-center justify-center text-[10px] gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="situations"><span class="text-lg">❓</span>今何が？</button></li>
+      <li class="w-1/6"><button class="nav-btn w-full py-2 flex flex-col items-center justify-center text-[10px] gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="glossary"><span class="text-lg">📝</span>用語集</button></li>
+      <li class="w-1/6"><button class="nav-btn w-full py-2 flex flex-col items-center justify-center text-[10px] gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="tournament"><span class="text-lg">🏆</span>大会</button></li>
+      <li class="w-1/6"><button class="nav-btn w-full py-2 flex flex-col items-center justify-center text-[10px] gap-1 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-emerald-400" data-target="live"><span class="text-lg">📺</span>観戦</button></li>
     </ul>
   </nav>
 
@@ -442,12 +599,27 @@
 
     // --- DOM操作 ---
     
-    // タブ切り替え
-    function switchTab(targetId) {
+    // タブ切り替えと履歴管理
+    let viewHistory = ['home'];
+
+    function switchTab(targetId, isPopState = false, isBackBtn = false) {
+      if (!isPopState && !isBackBtn) {
+        if (viewHistory[viewHistory.length - 1] !== targetId) {
+          viewHistory.push(targetId);
+          history.pushState({ tab: targetId }, '', '');
+        }
+      }
+
       document.querySelectorAll('.view').forEach(el => el.classList.add('hidden'));
       document.getElementById(targetId).classList.remove('hidden');
       
-      // ボタンのアクティブ状態
+      const backBtn = document.getElementById('back-btn');
+      if (targetId === 'home') {
+        backBtn.classList.add('hidden');
+      } else {
+        backBtn.classList.remove('hidden');
+      }
+      
       document.querySelectorAll('.nav-btn').forEach(btn => {
         if(btn.dataset.target === targetId) {
           btn.classList.add('text-primary', 'dark:text-emerald-400');
@@ -460,6 +632,24 @@
       });
       window.scrollTo(0,0);
     }
+
+    function handleBackBtn() {
+      if (viewHistory.length > 1) {
+        history.back(); // triggers popstate
+      }
+    }
+
+    window.addEventListener('popstate', (e) => {
+      if (viewHistory.length > 1) {
+        viewHistory.pop();
+      }
+      const targetId = (e.state && e.state.tab) ? e.state.tab : 'home';
+      switchTab(targetId, true);
+    });
+
+    // 初期状態セット
+    history.replaceState({ tab: 'home' }, '', '');
+
 
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -675,6 +865,352 @@
       });
       searchResults.classList.remove('hidden');
     });
+
+
+    // --- ライブ観戦トラッカー ロジック ---
+    let match = {
+      teamA: '', teamB: '',
+      battingFirst: '',
+      battingSecond: '',
+      innings: 1,
+      runs: [0, 0],
+      wickets: [0, 0],
+      balls: [0, 0],
+      extras: [0, 0],
+      currentOverBalls: [],
+      isFreehit: false,
+      history: [],
+      phase: 'setup'
+    };
+
+    function setCommentary(text) {
+      const c = document.getElementById('live-commentary-text');
+      c.classList.remove('fade-in');
+      void c.offsetWidth; // trigger reflow
+      c.classList.add('fade-in');
+      c.innerHTML = text;
+    }
+
+    function startMatchSetup() {
+      const a = document.getElementById('team-a-input').value || 'Team A';
+      const b = document.getElementById('team-b-input').value || 'Team B';
+      match.teamA = a;
+      match.teamB = b;
+      
+      document.getElementById('label-toss-a').textContent = a;
+      document.getElementById('label-toss-b').textContent = b;
+      
+      document.getElementById('live-phase-setup').classList.add('hidden');
+      document.getElementById('live-phase-toss').classList.remove('hidden');
+      match.phase = 'toss';
+    }
+
+    function processToss() {
+      const winner = document.querySelector('input[name="toss_winner"]:checked').value;
+      const decision = document.querySelector('input[name="toss_decision"]:checked').value;
+      
+      const winnerName = winner === 'A' ? match.teamA : match.teamB;
+      const loserName = winner === 'A' ? match.teamB : match.teamA;
+      
+      if (decision === 'bat') {
+        match.battingFirst = winnerName;
+        match.battingSecond = loserName;
+      } else {
+        match.battingFirst = loserName;
+        match.battingSecond = winnerName;
+      }
+      
+      document.getElementById('live-phase-toss').classList.add('hidden');
+      document.getElementById('live-phase-playing').classList.remove('hidden');
+      match.phase = 'playing';
+      match.innings = 1;
+      
+      setCommentary(`試合開始！パワープレイ開始！1〜6オーバーは外野に2人まで。`);
+      updateScoreboard();
+    }
+
+    function updateScoreboard() {
+      const i = match.innings - 1;
+      const runs = match.runs[i];
+      const wickets = match.wickets[i];
+      const balls = match.balls[i];
+      
+      const overs = Math.floor(balls / 6);
+      const remBalls = balls % 6;
+      const overStr = `${overs}.${remBalls}`;
+      
+      document.getElementById('sb-innings-text').textContent = `第${match.innings}イニングス`;
+      document.getElementById('sb-batting-team').textContent = match.innings === 1 ? match.battingFirst : match.battingSecond;
+      document.getElementById('sb-runs').textContent = runs;
+      document.getElementById('sb-wickets').textContent = wickets;
+      document.getElementById('sb-overs').textContent = overStr;
+      
+      let rr = 0;
+      if (balls > 0) rr = (runs / (balls / 6)).toFixed(2);
+      document.getElementById('sb-rr').textContent = rr;
+      
+      // Phase Info
+      let phaseInfo = "";
+      if (match.innings === 2) {
+        const target = match.runs[0] + 1;
+        const remRuns = target - runs;
+        const remTotalBalls = 120 - balls;
+        if (remRuns > 0 && remTotalBalls > 0) {
+          phaseInfo = `残り: ${remTotalBalls}球  目標: ${target}ラン`;
+        } else if (remRuns <= 0) {
+          phaseInfo = `目標達成！`;
+        } else {
+          phaseInfo = `終了`;
+        }
+      } else {
+        if (overs < 6) phaseInfo = `⚡ パワープレイ中 (1-6ov)`;
+        else if (overs >= 15) phaseInfo = `🔥 デスオーバー！`;
+        else phaseInfo = `通常フェーズ`;
+      }
+      
+      if (match.isFreehit) {
+        phaseInfo = `<span class="text-red-500 font-bold">🔥 フリーヒット！</span> ` + phaseInfo;
+      }
+      
+      document.getElementById('sb-phase-info').innerHTML = phaseInfo;
+      
+      // Current over balls
+      const co = document.getElementById('sb-current-over');
+      co.innerHTML = '';
+      match.currentOverBalls.forEach(b => {
+        let bClass = "inline-block px-2 py-1 bg-slate-800 rounded text-xs font-bold border border-slate-600 shrink-0";
+        let text = b;
+        if (b === '0') text = '○';
+        if (b === 'W') bClass += " bg-red-600 border-red-500";
+        if (b === '4') bClass += " bg-yellow-600 border-yellow-500";
+        if (b === '6') bClass += " bg-orange-600 border-orange-500";
+        if (b === 'Wd' || b === 'Nb') bClass += " text-red-400";
+        
+        co.innerHTML += `<span class="${bClass}">${text}</span>`;
+      });
+      
+      checkInningsStatus();
+    }
+
+    function checkInningsStatus() {
+      const i = match.innings - 1;
+      const runs = match.runs[i];
+      const wickets = match.wickets[i];
+      const balls = match.balls[i];
+      const btnNext = document.getElementById('btn-next-innings');
+      const eventsContainer = document.getElementById('live-event-buttons');
+      
+      let over = false;
+      if (wickets >= 10 || balls >= 120) over = true;
+      
+      if (match.innings === 2) {
+        const target = match.runs[0] + 1;
+        if (runs >= target) over = true;
+      }
+      
+      if (over) {
+        eventsContainer.classList.add('opacity-50', 'pointer-events-none');
+        if (match.innings === 1) {
+          setCommentary(`第1イニングス終了。${match.battingSecond} の目標は ${runs + 1} ランです！`);
+          btnNext.classList.remove('hidden');
+        } else {
+          finishMatch();
+        }
+      } else {
+        eventsContainer.classList.remove('opacity-50', 'pointer-events-none');
+        btnNext.classList.add('hidden');
+      }
+    }
+
+    function startInnings2() {
+      match.innings = 2;
+      match.currentOverBalls = [];
+      match.isFreehit = false;
+      document.getElementById('btn-next-innings').classList.add('hidden');
+      setCommentary(`第2イニングス開始！目標は ${match.runs[0] + 1} ランです。`);
+      updateScoreboard();
+    }
+
+    function finishMatch() {
+      document.getElementById('live-phase-playing').classList.add('hidden');
+      document.getElementById('live-phase-finished').classList.remove('hidden');
+      match.phase = 'finished';
+      
+      const r1 = match.runs[0];
+      const r2 = match.runs[1];
+      
+      document.getElementById('result-team1-name').textContent = match.battingFirst;
+      document.getElementById('result-team1-score').textContent = `${r1}/${match.wickets[0]}`;
+      
+      document.getElementById('result-team2-name').textContent = match.battingSecond;
+      document.getElementById('result-team2-score').textContent = `${r2}/${match.wickets[1]}`;
+      
+      let resText = "";
+      if (r2 > r1) {
+        const wRem = 10 - match.wickets[1];
+        resText = `${match.battingSecond} が ${wRem}ウィケット差で勝利！`;
+      } else if (r1 > r2) {
+        const rDiff = r1 - r2;
+        resText = `${match.battingFirst} が ${rDiff}ラン差で勝利！`;
+      } else {
+        resText = "同点！スーパーオーバーが必要です！";
+      }
+      document.getElementById('match-result-text').textContent = resText;
+    }
+
+    function resetLiveTracker() {
+      match = {
+        teamA: '', teamB: '', battingFirst: '', battingSecond: '',
+        innings: 1, runs: [0, 0], wickets: [0, 0], balls: [0, 0], extras: [0, 0],
+        currentOverBalls: [], isFreehit: false, history: [], phase: 'setup'
+      };
+      document.getElementById('team-a-input').value = '';
+      document.getElementById('team-b-input').value = '';
+      document.getElementById('live-phase-finished').classList.add('hidden');
+      document.getElementById('live-phase-setup').classList.remove('hidden');
+    }
+
+    function recordBall(val) {
+      saveHistory();
+      const i = match.innings - 1;
+      let prevFreehit = match.isFreehit;
+      match.isFreehit = false;
+      
+      if (val === 'Wd') {
+        match.runs[i] += 1;
+        match.extras[i] += 1;
+        match.currentOverBalls.push('Wd');
+        setCommentary("ワイド: 1ラン加算＋再投球。オーバーにカウントされません。");
+      } else if (val === 'Nb') {
+        match.runs[i] += 1;
+        match.extras[i] += 1;
+        match.currentOverBalls.push('Nb');
+        match.isFreehit = true;
+        setCommentary("ノーボール: 1ラン加算＋再投球＋次球フリーヒット！");
+      } else if (val === 'B1' || val === 'B2' || val === 'LB1' || val === 'LB2') {
+        const runs = parseInt(val.slice(-1));
+        match.runs[i] += runs;
+        match.extras[i] += runs;
+        match.balls[i] += 1;
+        match.currentOverBalls.push(val);
+        setCommentary(`${val.includes('LB') ? 'レッグバイ' : 'バイ'}: バットに当たらず走って得点。`);
+      } else {
+        // Runs 0-6
+        const runs = parseInt(val);
+        match.runs[i] += runs;
+        match.balls[i] += 1;
+        match.currentOverBalls.push(val);
+        
+        if (runs === 4) setCommentary("素晴らしいバウンダリー4！");
+        else if (runs === 6) setCommentary("見事なシックス！スタンドへ！");
+        else if (runs === 0) setCommentary("ドットボール。ランはありません。");
+        else setCommentary(`${runs}ラン獲得。`);
+        
+        checkMilestones(match.runs[i], match.runs[i] - runs);
+      }
+      
+      postBallProcess();
+    }
+
+    function toggleExtrasMenu() {
+      const menu = document.getElementById('extras-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    function showWicketModal() {
+      document.getElementById('wicket-modal').classList.remove('hidden');
+    }
+
+    function hideWicketModal() {
+      document.getElementById('wicket-modal').classList.add('hidden');
+    }
+
+    function recordWicket(type) {
+      hideWicketModal();
+      saveHistory();
+      
+      const i = match.innings - 1;
+      
+      // フリーヒット時のウィケット処理
+      if (match.isFreehit && type !== 'ランアウト') {
+        match.balls[i] += 1;
+        match.currentOverBalls.push('0');
+        setCommentary(`🔥 フリーヒット！ランアウト以外のアウトは適用されません`);
+        match.isFreehit = false;
+        postBallProcess();
+        return;
+      }
+      
+      match.wickets[i] += 1;
+      match.balls[i] += 1;
+      match.currentOverBalls.push('W');
+      match.isFreehit = false;
+      
+      let msg = "";
+      if (type === 'ボウルド') msg = "ボウルド！投球が直接ウィケットに命中！";
+      else if (type === 'コート') msg = "コート！素晴らしいキャッチ！";
+      else if (type === 'LBW') msg = "LBW！足でウィケットを守ってしまいました！";
+      else if (type === 'ランアウト') msg = "ランアウト！クリースに届く前にウィケットが崩されました！";
+      else if (type === 'スタンプト') msg = "スタンプト！キーパーの素早い動き！";
+      else if (type === 'ヒットウィケット') msg = "ヒットウィケット！バッター自身がウィケットを壊してしまった！";
+      else msg = "アウト！ウィケットが落ちました！";
+      
+      setCommentary(msg);
+      postBallProcess();
+    }
+
+    function postBallProcess() {
+      const i = match.innings - 1;
+      const balls = match.balls[i];
+      
+      if (balls % 6 === 0 && balls > 0 && match.currentOverBalls.length > 0) {
+        // Over finished
+        if (balls === 36) {
+          setTimeout(() => setCommentary("パワープレイ終了！外野に5人まで配置可能に。"), 2000);
+        } else if (balls === 90) { // 15 overs (120-30 = 90)
+          setTimeout(() => setCommentary("デスオーバー！残り5オーバーです。"), 2000);
+        }
+        
+        match.currentOverBalls = [];
+      }
+      
+      document.getElementById('extras-menu').classList.add('hidden');
+      updateScoreboard();
+    }
+
+    function checkMilestones(current, prev) {
+      if (prev < 50 && current >= 50) setTimeout(() => setCommentary("50ラン達成！ハーフセンチュリー 🎉"), 2000);
+      if (prev < 100 && current >= 100) setTimeout(() => setCommentary("100ラン達成！センチュリー 🎉🎉"), 2000);
+      if (prev < 150 && current >= 150) setTimeout(() => setCommentary("150ラン到達！ 🔥"), 2000);
+    }
+
+    function saveHistory() {
+      match.history.push(JSON.parse(JSON.stringify({
+        innings: match.innings,
+        runs: match.runs,
+        wickets: match.wickets,
+        balls: match.balls,
+        extras: match.extras,
+        currentOverBalls: match.currentOverBalls,
+        isFreehit: match.isFreehit
+      })));
+    }
+
+    function undoLastBall() {
+      if (match.history.length === 0) return;
+      const prev = match.history.pop();
+      match.innings = prev.innings;
+      match.runs = prev.runs;
+      match.wickets = prev.wickets;
+      match.balls = prev.balls;
+      match.extras = prev.extras;
+      match.currentOverBalls = prev.currentOverBalls;
+      match.isFreehit = prev.isFreehit;
+      
+      setCommentary("1球元に戻しました。");
+      updateScoreboard();
+    }
+
 
     // 検索ボックス外クリックで閉じる
     document.addEventListener('click', (e) => {

@@ -180,12 +180,31 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-bold mb-1">チームA</label>
-            <input type="text" id="team-a-input" placeholder="Team A" class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white">
+            <input type="text" id="team-a-input" list="asian-games-teams" placeholder="国名・チーム名を選択または入力..." class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white">
           </div>
           <div>
             <label class="block text-sm font-bold mb-1">チームB</label>
-            <input type="text" id="team-b-input" placeholder="Team B" class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white">
+            <input type="text" id="team-b-input" list="asian-games-teams" placeholder="国名・チーム名を選択または入力..." class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white">
           </div>
+          
+          <datalist id="asian-games-teams">
+            <option value="日本"></option>
+            <option value="インド"></option>
+            <option value="パキスタン"></option>
+            <option value="スリランカ"></option>
+            <option value="バングラデシュ"></option>
+            <option value="アフガニスタン"></option>
+            <option value="ネパール"></option>
+            <option value="香港"></option>
+            <option value="マレーシア"></option>
+            <option value="アラブ首長国連邦 (UAE)"></option>
+            <option value="シンガポール"></option>
+            <option value="タイ"></option>
+            <option value="インドネシア"></option>
+            <option value="モルディブ"></option>
+            <option value="モンゴル"></option>
+            <option value="カンボジア"></option>
+          </datalist>
           <button class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-emerald-700 transition" onclick="startMatchSetup()">試合を開始</button>
         </div>
       </div>

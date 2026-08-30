@@ -1618,7 +1618,7 @@
       const wickets = match.wickets[i];
       const balls = match.balls[i];
       const btnNext = document.getElementById('btn-next-innings');
-      const eventsContainer = document.getElementById('live-event-buttons');
+      const eventsContainer = document.getElementById('live-events-container');
       
       let over = false;
       if (wickets >= 10 || balls >= 120) over = true;
@@ -1629,16 +1629,16 @@
       }
       
       if (over) {
-        eventsContainer.classList.add('opacity-50', 'pointer-events-none');
+        if (eventsContainer) eventsContainer.classList.add('opacity-50', 'pointer-events-none');
         if (match.innings === 1) {
           setCommentary(`第1イニングス終了。${match.battingSecond} の目標は ${runs + 1} ランです！`);
-          btnNext.classList.remove('hidden');
+          if (btnNext) btnNext.classList.remove('hidden');
         } else {
           finishMatch();
         }
       } else {
-        eventsContainer.classList.remove('opacity-50', 'pointer-events-none');
-        btnNext.classList.add('hidden');
+        if (eventsContainer) eventsContainer.classList.remove('opacity-50', 'pointer-events-none');
+        if (btnNext) btnNext.classList.add('hidden');
       }
     }
 
@@ -1647,8 +1647,30 @@
       match.currentOverBalls = [];
       match.isFreehit = false;
       document.getElementById('btn-next-innings').classList.add('hidden');
-      setCommentary(`第2イニングス開始！目標は ${match.runs[0] + 1} ランです。`);
-      updateScoreboard();
+      
+      if (match.trackerMode === 'detailed') {
+        // 第2イニングス用の詳細ステートリセット
+        match.detailed = {
+          batters: [],
+          bowlers: [],
+          strikerIdx: 0,
+          nonStrikerIdx: 1,
+          bowlerIdx: 0
+        };
+        document.getElementById('live-phase-playing').classList.add('hidden');
+        document.getElementById('ds-bat-team').textContent = match.battingSecond;
+        document.getElementById('ds-bowl-team').textContent = match.battingFirst;
+        document.getElementById('ds-batter1').value = '';
+        document.getElementById('ds-batter2').value = '';
+        document.getElementById('ds-bowler').value = '';
+        document.getElementById('live-phase-detailed-setup').classList.remove('hidden');
+        match.phase = 'detailed_setup';
+        
+        // startDetailedMatchPlaying() ボタンによって再開される
+      } else {
+        setCommentary(`第2イニングス開始！目標は ${match.runs[0] + 1} ランです。`);
+        updateScoreboard();
+      }
     }
 
     function finishMatch() {
